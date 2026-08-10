@@ -140,6 +140,28 @@
 </button>
 </div>
 </nav>
+<script>
+/* NAV-ACTIVE-SCRIPT */
+(function(){
+  try{
+    var path = location.pathname.replace(/\/+$/, '/') || '/';
+    var nav = document.querySelector('nav');
+    if(!nav) return;
+    nav.querySelectorAll('a[href]').forEach(function(a){
+      try{
+        var href = a.getAttribute('href');
+        if(!href) return;
+        var dest = new URL(href, location.origin).pathname.replace(/\/+$/, '/') || '/';
+        if(dest === path){
+          a.classList.add('text-primary','font-bold','border-b-2','border-primary','pb-1');
+        } else {
+          a.classList.remove('text-primary','font-bold','border-b-2','border-primary','pb-1');
+        }
+      }catch(e){}
+    });
+  }catch(e){}
+})();
+</script>
 <main class="flex-grow max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-section-gap flex flex-col gap-16">
 <!-- Header Section -->
 <section class="text-center md:text-left flex flex-col gap-4">

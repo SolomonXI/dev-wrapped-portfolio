@@ -165,6 +165,28 @@
 </button>
 </div>
 </nav>
+<script>
+/* NAV-ACTIVE-SCRIPT */
+(function(){
+  try{
+    var path = location.pathname.replace(/\/+$/, '/') || '/';
+    var nav = document.querySelector('nav');
+    if(!nav) return;
+    nav.querySelectorAll('a[href]').forEach(function(a){
+      try{
+        var href = a.getAttribute('href');
+        if(!href) return;
+        var dest = new URL(href, location.origin).pathname.replace(/\/+$/, '/') || '/';
+        if(dest === path){
+          a.classList.add('text-primary','font-bold','border-b-2','border-primary','pb-1');
+        } else {
+          a.classList.remove('text-primary','font-bold','border-b-2','border-primary','pb-1');
+        }
+      }catch(e){}
+    });
+  }catch(e){}
+})();
+</script>
 <!-- Main Content Canvas -->
 <main class="flex-grow pt-32 pb-section-gap relative z-10">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col items-center">
