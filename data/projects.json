@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Nova Dashboard",
+    "description": "Real-time monitoring for distributed systems.",
+    "tags": [
+      "Next.js",
+      "Go",
+      "gRPC",
+      "arrow_forward"
+    ],
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAft9Rvb8ysdoLAuQyDVL98pHWWMkvdei48QGvtU9YuSEb6Z_cgLZLLMZlvdFtO96i0SvqKQzOBBKuq2EWqF3v1cCS-LrjC2zo44aD9ZDijIJu-Rwj9_IKNpjKplQ2NTJ9rMvi62yTYtMhyJ0SoPdn-KBQ5FN534om5wrUoWiIaidCB_8QsmtHXFpI0D8iNwRFNVlTXbI43qeGC5pfMw7SaP7fIOgLkkDLJW08SEQDObd0F4IH581E774gqM0VaFzOwVAX4dBp3_Rlx",
+    "link": "https://demo.example.com"
+  },
+  {
+    "title": "Aether API",
+    "description": "A high-performance GraphQL wrapper for legacy ERPs.",
+    "tags": [
+      "\n                            v2.0\n                        ",
+      "Node.js",
+      "PostgreSQL",
+      "arrow_forward"
+    ],
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDkvGWfyCwvwVXNQUA4DFHR3aRrlaTzjwmdCHBc2YF0s1IB9ld-Mwz31M0INy3xdouIaaUCsB-FN9qPGJsg-8aHmehqGslRICzjKqFz09tnuhhbGIcIc_2xhkjPsSkFf5-5wd6Hsx__CkdTXlXjwlMqkY7n80sHnBxU-aYSJ1yFA2eXDr1AEZvIPCRSiTLuBD6iGCLIEtUUkNaZWDU9TuN1SjCi4hAuPoOHrbHesSDf2wZbsO3fjKRKmKfIy3q4pNid5QQCmC6SM2jc",
+    "link": "https://demo.example.com"
+  },
+  {
+    "title": "Prism UI",
+    "description": "Accessible component library for the creative web.",
+    "tags": [
+      "star",
+      "TypeScript",
+      "Tailwind",
+      "arrow_forward"
+    ],
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBpZ-SgFxU9j3yWNS2V4BYlj90lTty1QCVBnPFF_AAMzHafNLk-1cxka3Wjg-G5j6Pt-Z3VIdcis0MPK0uYo-EAgimqndT0C528Q9-UuTfaJHSfpz8JqubbwWND1Nlj37jgZgMdR5OtcuEpZJyXOdTGGIs88wo47SKFg2scaGu6iUYYwzNLHpYuEkTfMdsFGg0hFR0CoH9gp1tH3ReQOzmmn4bVzw8e4M60silwpxNggthKSX_N_s2RT735VpAvHlvEuyK1gEd2iesn",
+    "link": "https://demo.example.com"
+  }
+]
