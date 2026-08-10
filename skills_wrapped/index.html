@@ -117,24 +117,33 @@
 </head>
 <body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden selection:bg-primary/30 selection:text-primary">
 <!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-sm">
-<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-20">
+<nav class="bg-surface/80 backdrop-blur-xl font-body-md text-body-md fixed top-0 w-full z-50 border-b border-white/10 shadow-sm">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-20 md:px-margin-desktop px-margin-mobile">
+<!-- Brand -->
 <div class="font-display-xl text-headline-md font-black tracking-tighter text-primary">
                 Dev Wrapped
             </div>
-<div class="hidden md:flex items-center gap-8 font-body-md text-body-md">
-<a class="text-on-surface-variant hover:bg-white/5 transition-all duration-300 px-3 py-2 rounded-lg" href="/">Home</a>
-<a class="text-on-surface-variant hover:bg-white/5 transition-all duration-300 px-3 py-2 rounded-lg" href="/featured_projects_wrapped_visual/">Projects</a>
-<a class="text-primary font-bold border-b-2 border-primary pb-1 active:scale-95 transition-transform" href="/skills_wrapped/">Skills</a>
-<a class="text-on-surface-variant hover:bg-white/5 transition-all duration-300 px-3 py-2 rounded-lg" href="/certificates_wrapped/">Certificates</a>
-
+<!-- Navigation Links (Hidden on Mobile) -->
+<div class="hidden md:flex space-x-6">
+<!-- Home is Active -->
+<a class="text-primary font-bold border-b-2 border-primary pb-1 active:scale-95 transition-transform" href="/">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/featured_projects_wrapped_visual/">Projects</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/skills_wrapped/">Skills</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/experience_wrapped/">Experience</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/certificates_wrapped/">Certificates</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/contact_me/">Contact</a>
 </div>
-<div class="flex items-center gap-4">
-<button class="bg-primary text-on-primary-fixed font-label-bold text-label-bold px-6 py-2 rounded-full hover:bg-primary-fixed-dim transition-colors shadow-[0_0_15px_rgba(83,224,118,0.3)] hover:shadow-[0_0_25px_rgba(83,224,118,0.5)] active:scale-95" onclick="location.href='/contact_me/'">Contact</button>
-<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/30 ml-2">
-<img alt="Developer Profile" class="w-full h-full object-cover" data-alt="A futuristic, stylized avatar of a developer in a neon-lit cyberpunk environment, wearing glowing augmented reality glasses. The color palette features deep blacks, vibrant neon greens, and electric purples. The lighting is cinematic with strong rim lights highlighting the subject's profile, conveying a sense of high-tech expertise and modern digital craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL2e7XZ5kNrOX9rQue9C0_EoioLMnLu195qC_yH15bL9vXhXVmHto7Q4D9rgNTxrM-iH44mKp1xOH2VOiUPe4AAKO0YYLaqtS2VVsQFm4zuQO6nUN-66__akYoWtV3HyBSvcIniB_XiTxRij1UJKPrbEXAfK5wtYdl5Azd14f0Ga5S-LHHE8Gw74kdvNh1hWUa1kBkxMD8x8iHQ9_Ep5NtgVjJemx2SDDf06dhcmc2lIWqle_K8inq79pOBAUZ6puvVnVggVOa7-QE">
+<!-- Trailing Action -->
+<div class="hidden md:block">
+<button class="btn-secondary font-label-bold text-label-bold px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+                    Contact
+                </button>
 </div>
-</div>
+<!-- Mobile Menu Toggle (Decorative for this scope) -->
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
 </div>
 </nav>
 <!-- Main Content Canvas -->

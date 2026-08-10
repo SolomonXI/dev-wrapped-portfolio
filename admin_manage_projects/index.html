@@ -133,41 +133,33 @@
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex selection:bg-primary selection:text-on-primary">
 <!-- SideNavBar (From Shared Components) -->
-<nav class="bg-surface-container text-primary font-label-bold text-label-bold h-screen w-64 fixed left-0 top-0 shadow-xl hidden md:flex flex-col py-6 gap-2 z-40 border-r border-surface-container-high">
-<div class="px-6 mb-8 flex items-center gap-4">
-<img alt="Admin Avatar" class="w-10 h-10 rounded-full object-cover border border-primary/30" data-alt="A small, circular, high-tech looking avatar graphic suitable for an admin dashboard. It should feature a stylized digital portrait with subtle neon green and purple accents against a dark background, reflecting a developer mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsEaOGNCu3YEy2oqHNkx3oX63tsek_mfvnuq7o5x41eOIZOuMkbupdINBln3EqXcDPt0pE-9ht1aMGWgGPAVPY_iTQ1Omdau9NkTlVKTd2idqg_jSbfRDCQ7OsA6a1CR4beS9MIo5pSwrW1QYAJWiJmkM_BrRCY4P8o5-v47bsxEUNjuCkpYuunoJJVauvSI141CQOIoKgb6NXgLq1lTvbdz9ZGbBtFKycSBe9BsYypX7qbGju0cAzfvg5IGxgyTsOqoi9pGNWs97z"/>
-<div>
-<h1 class="font-display-xl-mobile text-headline-md text-primary m-0 text-[20px] leading-tight">Admin Panel</h1>
-<p class="text-[12px] text-on-surface-variant font-body-md">Developer Mode</p>
+<!-- TopNavBar -->
+<nav class="bg-surface/80 backdrop-blur-xl font-body-md text-body-md fixed top-0 w-full z-50 border-b border-white/10 shadow-sm">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-20 md:px-margin-desktop px-margin-mobile">
+<!-- Brand -->
+<div class="font-display-xl text-headline-md font-black tracking-tighter text-primary">
+                Dev Wrapped
+            </div>
+<!-- Navigation Links (Hidden on Mobile) -->
+<div class="hidden md:flex space-x-6">
+<!-- Home is Active -->
+<a class="text-primary font-bold border-b-2 border-primary pb-1 active:scale-95 transition-transform" href="/">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/featured_projects_wrapped_visual/">Projects</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/skills_wrapped/">Skills</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/experience_wrapped/">Experience</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/certificates_wrapped/">Certificates</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/contact_me/">Contact</a>
 </div>
+<!-- Trailing Action -->
+<div class="hidden md:block">
+<button class="btn-secondary font-label-bold text-label-bold px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+                    Contact
+                </button>
 </div>
-<div class="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-1 px-2">
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
-<span>Overview</span>
-</a>
-<!-- Active State for Projects -->
-<a class="bg-primary-container text-on-primary-container rounded-lg mx-2 px-4 py-3 flex items-center gap-3 active:scale-95 transition-transform font-bold" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">code</span>
-<span>Projects</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">psychology</span>
-<span>Skills</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">work</span>
-<span>Experience</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
-<span>Settings</span>
-</a>
-</div>
-<div class="mt-auto px-4">
-<button class="w-full text-left text-error hover:bg-surface-variant rounded-lg px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1">
-<span class="material-symbols-outlined">logout</span>
-<span>Logout</span>
+<!-- Mobile Menu Toggle (Decorative for this scope) -->
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
 </button>
 </div>
 </nav>

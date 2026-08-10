@@ -126,28 +126,35 @@
 <h2 class="font-headline-md text-headline-md text-primary tracking-tight">Admin Panel</h2>
 <p class="font-label-bold text-label-bold text-on-surface-variant mt-1">Developer Mode</p>
 </div>
-<nav class="flex-1 px-2 space-y-1">
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all font-label-bold text-label-bold group" href="#">
-<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">dashboard</span>
-                Overview
-            </a>
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all font-label-bold text-label-bold group" href="#">
-<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">code</span>
-                Projects
-            </a>
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all font-label-bold text-label-bold group" href="#">
-<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">psychology</span>
-                Skills
-            </a>
-<!-- Active State -->
-<a class="bg-primary-container text-on-primary-container rounded-lg mx-2 px-4 py-3 flex items-center gap-3 font-label-bold text-label-bold" href="#">
-<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">work</span>
-                Experience
-            </a>
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all font-label-bold text-label-bold group" href="#">
-<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">settings</span>
-                Settings
-            </a>
+<!-- TopNavBar -->
+<nav class="bg-surface/80 backdrop-blur-xl font-body-md text-body-md fixed top-0 w-full z-50 border-b border-white/10 shadow-sm">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-20 md:px-margin-desktop px-margin-mobile">
+<!-- Brand -->
+<div class="font-display-xl text-headline-md font-black tracking-tighter text-primary">
+                Dev Wrapped
+            </div>
+<!-- Navigation Links (Hidden on Mobile) -->
+<div class="hidden md:flex space-x-6">
+<!-- Home is Active -->
+<a class="text-primary font-bold border-b-2 border-primary pb-1 active:scale-95 transition-transform" href="/">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/featured_projects_wrapped_visual/">Projects</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/skills_wrapped/">Skills</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/experience_wrapped/">Experience</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/certificates_wrapped/">Certificates</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/contact_me/">Contact</a>
+</div>
+<!-- Trailing Action -->
+<div class="hidden md:block">
+<button class="btn-secondary font-label-bold text-label-bold px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+                    Contact
+                </button>
+</div>
+<!-- Mobile Menu Toggle (Decorative for this scope) -->
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
 </nav>
 <div class="px-4 mt-auto">
 <button class="w-full text-on-surface-variant hover:text-error hover:bg-surface-variant rounded-lg px-4 py-3 flex items-center gap-3 transition-all font-label-bold text-label-bold">

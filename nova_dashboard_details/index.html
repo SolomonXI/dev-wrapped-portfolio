@@ -150,28 +150,33 @@
 
 </div>
 <!-- TopNavBar -->
-<nav class="bg-surface/80 backdrop-blur-xl fixed top-0 w-full z-50 border-b border-white/10 shadow-sm">
+<nav class="bg-surface/80 backdrop-blur-xl font-body-md text-body-md fixed top-0 w-full z-50 border-b border-white/10 shadow-sm">
 <div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-20 md:px-margin-desktop px-margin-mobile">
 <!-- Brand -->
-<a class="font-display-xl text-headline-md font-black tracking-tighter text-primary" href="#">
+<div class="font-display-xl text-headline-md font-black tracking-tighter text-primary">
                 Dev Wrapped
-            </a>
-<!-- Desktop Nav Links -->
-<div class="hidden md:flex items-center gap-6">
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 duration-300 rounded-md px-3 py-2 active:scale-95 transition-transform" href="/">Home</a>
-<a class="font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1 active:scale-95 transition-transform" href="/featured_projects_wrapped_visual/">Projects</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 duration-300 rounded-md px-3 py-2 active:scale-95 transition-transform" href="/skills_wrapped/">Skills</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 duration-300 rounded-md px-3 py-2 active:scale-95 transition-transform" href="/experience_wrapped/">Experience</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 duration-300 rounded-md px-3 py-2 active:scale-95 transition-transform" href="/certificates_wrapped/">Certificates</a>
+            </div>
+<!-- Navigation Links (Hidden on Mobile) -->
+<div class="hidden md:flex space-x-6">
+<!-- Home is Active -->
+<a class="text-primary font-bold border-b-2 border-primary pb-1 active:scale-95 transition-transform" href="/">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/featured_projects_wrapped_visual/">Projects</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/skills_wrapped/">Skills</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/experience_wrapped/">Experience</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/certificates_wrapped/">Certificates</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/contact_me/">Contact</a>
 </div>
 <!-- Trailing Action -->
-<div class="flex items-center gap-4">
-<a class="hidden md:inline-flex font-label-bold text-label-bold bg-primary text-on-primary px-6 py-2 rounded-full hover:brightness-110 active:scale-95 transition-all" href="/contact_me/">Contact</a>
-<!-- Mobile Menu Toggle -->
-<button class="md:hidden text-on-surface hover:text-primary transition-colors p-2 rounded-lg hover:bg-white/5">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
-</button>
+<div class="hidden md:block">
+<button class="btn-secondary font-label-bold text-label-bold px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+                    Contact
+                </button>
 </div>
+<!-- Mobile Menu Toggle (Decorative for this scope) -->
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
 </div>
 </nav>
 <!-- Main Content Canvas -->

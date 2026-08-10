@@ -125,46 +125,35 @@
 <body class="bg-background text-on-background font-body-md text-body-md antialiased overflow-hidden selection:bg-primary selection:text-on-primary-container">
 <div class="flex h-screen w-full relative">
 <!-- Shared Component: SideNavBar -->
-<nav class="bg-surface-container text-primary font-label-bold text-label-bold h-screen w-64 fixed left-0 top-0 shadow-xl flex flex-col py-6 gap-2 z-40 border-r border-white/5">
-<!-- Header Section -->
-<div class="px-6 mb-8 flex items-center gap-4 bg-surface-container-high py-4 mx-2 rounded-xl">
-<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/30 relative">
-<img class="w-full h-full object-cover" data-alt="Admin Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQB1ddPXrLs4Ct2joVbElebrufMxYIinJFWOxHywCkmLIPlIC05RAgigvj2Zel_lnNV6NyP2Ob88o3V8jdcUJafvLZKJkakgWaYfe9JcwAggTHqp6nfJq-TsUzA7YIXA8ckZOlCaXVuKrimUWV0w6uuS3EJo4JOZHFHKqlPQ-ca0LyVVXs1JUcIODh246Bh0qZ1Hx9mJPNWRWctz_HxSDkmneObmD7yLQHHtkfPJ24tINCzs1ux_wpIDnNg_umxUIkGeDqzLZ51TXZ">
+<!-- TopNavBar -->
+<nav class="bg-surface/80 backdrop-blur-xl font-body-md text-body-md fixed top-0 w-full z-50 border-b border-white/10 shadow-sm">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-20 md:px-margin-desktop px-margin-mobile">
+<!-- Brand -->
+<div class="font-display-xl text-headline-md font-black tracking-tighter text-primary">
+                Dev Wrapped
+            </div>
+<!-- Navigation Links (Hidden on Mobile) -->
+<div class="hidden md:flex space-x-6">
+<!-- Home is Active -->
+<a class="text-primary font-bold border-b-2 border-primary pb-1 active:scale-95 transition-transform" href="/">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/featured_projects_wrapped_visual/">Projects</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/skills_wrapped/">Skills</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/experience_wrapped/">Experience</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/certificates_wrapped/">Certificates</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-white/5 transition-all duration-300 px-2 py-1 rounded-DEFAULT active:scale-95 transition-transform" href="/contact_me/">Contact</a>
 </div>
-<div>
-<h1 class="font-display-xl text-headline-md text-primary m-0 p-0 leading-none">Admin Panel</h1>
-<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-1">Developer Mode</p>
+<!-- Trailing Action -->
+<div class="hidden md:block">
+<button class="btn-secondary font-label-bold text-label-bold px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+                    Contact
+                </button>
 </div>
+<!-- Mobile Menu Toggle (Decorative for this scope) -->
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
 </div>
-<!-- Navigation Links (Active: Overview) -->
-<div class="flex-1 flex flex-col gap-2">
-<a class="bg-primary-container text-on-primary-container rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-transform hover:translate-x-1 group relative overflow-hidden" href="#">
-<span class="material-symbols-outlined icon-fill z-10" data-icon="dashboard">dashboard</span>
-<span class="z-10">Overview</span>
-<div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
-<span class="material-symbols-outlined" data-icon="code">code</span>
-<span class="group-hover:text-primary transition-colors">Projects</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
-<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
-<span class="group-hover:text-primary transition-colors">Skills</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
-<span class="material-symbols-outlined" data-icon="work">work</span>
-<span class="group-hover:text-primary transition-colors">Experience</span>
-</a>
-<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group mt-auto mb-4" href="#">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-<span class="group-hover:text-primary transition-colors">Settings</span>
-</a>
-</div>
-<!-- CTA -->
-<button class="mx-4 mt-auto mb-4 py-3 rounded-lg border border-white/10 text-on-surface-variant hover:bg-surface-variant hover:text-white transition-all font-label-bold text-label-bold flex items-center justify-center gap-2 group">
-<span class="material-symbols-outlined group-hover:text-error transition-colors" data-icon="logout">logout</span>
-                Logout
-            </button>
 </nav>
 <!-- Main Content Canvas -->
 <main class="ml-64 flex-1 h-screen overflow-y-auto bg-background p-margin-desktop relative">
