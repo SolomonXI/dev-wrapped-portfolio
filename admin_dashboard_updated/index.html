@@ -1,0 +1,444 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Admin Panel - Dev Wrapped</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#7200a3",
+                        "surface-container-low": "#1c1b1b",
+                        "on-primary-container": "#004118",
+                        "surface-variant": "#353534",
+                        "on-tertiary-container": "#730030",
+                        "inverse-on-surface": "#313030",
+                        "on-primary-fixed-variant": "#005320",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#f9e0ff",
+                        "primary-container": "#1db954",
+                        "primary-fixed-dim": "#53e076",
+                        "surface": "#131313",
+                        "inverse-primary": "#006e2d",
+                        "tertiary-fixed-dim": "#ffb1c1",
+                        "secondary-fixed": "#f6d9ff",
+                        "on-tertiary": "#66002a",
+                        "outline": "#869585",
+                        "error": "#ffb4ab",
+                        "on-background": "#e5e2e1",
+                        "secondary-fixed-dim": "#e8b3ff",
+                        "on-secondary": "#500074",
+                        "on-primary-fixed": "#002108",
+                        "surface-dim": "#131313",
+                        "outline-variant": "#3d4a3d",
+                        "surface-container-lowest": "#0e0e0e",
+                        "secondary": "#e8b3ff",
+                        "on-surface": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353534",
+                        "on-secondary-fixed": "#310049",
+                        "surface-container": "#201f1f",
+                        "inverse-surface": "#e5e2e1",
+                        "tertiary": "#ffb1c1",
+                        "tertiary-container": "#ff7297",
+                        "surface-bright": "#393939",
+                        "error-container": "#93000a",
+                        "background": "#131313",
+                        "on-primary": "#003914",
+                        "primary-fixed": "#72fe8f",
+                        "secondary-container": "#a402e9",
+                        "primary": "#53e076",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary-fixed-variant": "#90003e",
+                        "tertiary-fixed": "#ffd9df",
+                        "on-surface-variant": "#bccbb9",
+                        "on-tertiary-fixed": "#3f0017",
+                        "surface-tint": "#53e076"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "container-max": "1200px",
+                        "margin-desktop": "48px",
+                        "section-gap": "80px",
+                        "card-padding": "24px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "stats-number": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "display-xl": ["Montserrat"],
+                        "label-bold": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-xl-mobile": ["Montserrat"]
+                    },
+                    fontSize: {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "stats-number": ["40px", { "lineHeight": "48px", "fontWeight": "900" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "display-xl": ["72px", { "lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "900" }],
+                        "label-bold": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-xl-mobile": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.03em", "fontWeight": "900" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #353534;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #53e076;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased overflow-hidden selection:bg-primary selection:text-on-primary-container">
+<div class="flex h-screen w-full relative">
+<!-- Shared Component: SideNavBar -->
+<nav class="bg-surface-container text-primary font-label-bold text-label-bold h-screen w-64 fixed left-0 top-0 shadow-xl flex flex-col py-6 gap-2 z-40 border-r border-white/5">
+<!-- Header Section -->
+<div class="px-6 mb-8 flex items-center gap-4 bg-surface-container-high py-4 mx-2 rounded-xl">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/30 relative">
+<img class="w-full h-full object-cover" data-alt="Admin Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQB1ddPXrLs4Ct2joVbElebrufMxYIinJFWOxHywCkmLIPlIC05RAgigvj2Zel_lnNV6NyP2Ob88o3V8jdcUJafvLZKJkakgWaYfe9JcwAggTHqp6nfJq-TsUzA7YIXA8ckZOlCaXVuKrimUWV0w6uuS3EJo4JOZHFHKqlPQ-ca0LyVVXs1JUcIODh246Bh0qZ1Hx9mJPNWRWctz_HxSDkmneObmD7yLQHHtkfPJ24tINCzs1ux_wpIDnNg_umxUIkGeDqzLZ51TXZ">
+</div>
+<div>
+<h1 class="font-display-xl text-headline-md text-primary m-0 p-0 leading-none">Admin Panel</h1>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-1">Developer Mode</p>
+</div>
+</div>
+<!-- Navigation Links (Active: Overview) -->
+<div class="flex-1 flex flex-col gap-2">
+<a class="bg-primary-container text-on-primary-container rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-transform hover:translate-x-1 group relative overflow-hidden" href="#">
+<span class="material-symbols-outlined icon-fill z-10" data-icon="dashboard">dashboard</span>
+<span class="z-10">Overview</span>
+<div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined" data-icon="code">code</span>
+<span class="group-hover:text-primary transition-colors">Projects</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="group-hover:text-primary transition-colors">Skills</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+<span class="group-hover:text-primary transition-colors">Experience</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group mt-auto mb-4" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="group-hover:text-primary transition-colors">Settings</span>
+</a>
+</div>
+<!-- CTA -->
+<button class="mx-4 mt-auto mb-4 py-3 rounded-lg border border-white/10 text-on-surface-variant hover:bg-surface-variant hover:text-white transition-all font-label-bold text-label-bold flex items-center justify-center gap-2 group">
+<span class="material-symbols-outlined group-hover:text-error transition-colors" data-icon="logout">logout</span>
+                Logout
+            </button>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 h-screen overflow-y-auto bg-background p-margin-desktop relative">
+<header class="mb-12 flex justify-between items-end">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-white">Dashboard Overview</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2">Welcome back. Here's your developer wrapped summary.</p>
+</div>
+<button class="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors font-label-bold text-label-bold" onclick="document.getElementById('mfaModal').classList.remove('hidden')">
+                    Simulate Login View
+                </button>
+</header>
+<!-- Stats Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-section-gap">
+<!-- Projects Stat -->
+<div class="bg-surface-container rounded-xl p-card-padding relative overflow-hidden group hover:bg-surface-container-high transition-colors border border-white/5 hover:border-primary/30">
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="flex items-start justify-between relative z-10">
+<div>
+<p class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-widest">Total Projects</p>
+<h3 class="font-stats-number text-stats-number text-white mt-2 group-hover:text-primary transition-colors text-glow-primary">12</h3>
+</div>
+<span class="material-symbols-outlined text-primary/50 text-4xl" data-icon="terminal">terminal</span>
+</div>
+</div>
+<!-- Skills Stat -->
+<div class="bg-surface-container rounded-xl p-card-padding relative overflow-hidden group hover:bg-surface-container-high transition-colors border border-white/5 hover:border-secondary/30">
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-secondary/20 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="flex items-start justify-between relative z-10">
+<div>
+<p class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-widest">Mastered Skills</p>
+<h3 class="font-stats-number text-stats-number text-white mt-2 group-hover:text-secondary transition-colors text-glow-secondary">24</h3>
+</div>
+<span class="material-symbols-outlined text-secondary/50 text-4xl" data-icon="psychology">psychology</span>
+</div>
+</div>
+<!-- Certificates Stat -->
+<div class="bg-surface-container rounded-xl p-card-padding relative overflow-hidden group hover:bg-surface-container-high transition-colors border border-white/5 hover:border-tertiary/30">
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-tertiary/20 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="flex items-start justify-between relative z-10">
+<div>
+<p class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-widest">Certificates</p>
+<h3 class="font-stats-number text-stats-number text-white mt-2 group-hover:text-tertiary transition-colors text-glow-tertiary">5</h3>
+</div>
+<span class="material-symbols-outlined text-tertiary/50 text-4xl" data-icon="workspace_premium">workspace_premium</span>
+</div>
+</div>
+</div>
+<!-- Content Grid (Activity & Projects Table) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter mb-20">
+<!-- Recent Activity Feed (1 column wide) -->
+<div class="col-span-1 bg-surface-container rounded-xl p-card-padding border border-white/5 flex flex-col h-full">
+<h3 class="font-headline-md text-headline-md text-white mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="history">history</span>
+                        Activity Feed
+                    </h3>
+<div class="flex-1 flex flex-col gap-6 relative">
+<!-- Activity Line -->
+<div class="absolute left-3 top-2 bottom-2 w-px bg-white/10 z-0"></div>
+<!-- Item 1 -->
+<div class="flex gap-4 relative z-10 group">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 ring-4 ring-surface-container">
+<span class="material-symbols-outlined text-[14px]" data-icon="add">add</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-white group-hover:text-primary transition-colors">Added Prism UI</p>
+<p class="text-sm text-on-surface-variant mt-1">2 hours ago</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-4 relative z-10 group">
+<div class="w-6 h-6 rounded-full bg-secondary-container text-secondary shrink-0 flex items-center justify-center ring-4 ring-surface-container">
+<span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-white group-hover:text-secondary transition-colors">Updated Profile</p>
+<p class="text-sm text-on-surface-variant mt-1">5 hours ago</p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex gap-4 relative z-10 group">
+<div class="w-6 h-6 rounded-full bg-tertiary-container text-tertiary shrink-0 flex items-center justify-center ring-4 ring-surface-container">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-white group-hover:text-tertiary transition-colors">Deployed V2.4</p>
+<p class="text-sm text-on-surface-variant mt-1">Yesterday</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Projects Management Table (2 columns wide) -->
+<div class="col-span-1 lg:col-span-2 bg-surface-container rounded-xl p-card-padding border border-white/5 flex flex-col mb-gutter">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="folder_managed">folder_managed</span>
+                            Projects Management
+                        </h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-white/10 text-on-surface-variant font-label-bold text-label-bold uppercase tracking-wider">
+<th class="pb-4 font-normal">Name</th>
+<th class="pb-4 font-normal">Category</th>
+<th class="pb-4 font-normal">Status</th>
+<th class="pb-4 font-normal text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="text-body-md font-body-md">
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors group">
+<td class="py-4 font-bold text-white group-hover:text-primary transition-colors">Prism UI</td>
+<td class="py-4 text-on-surface-variant">Design System</td>
+<td class="py-4">
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-label-bold border border-primary/20">Active</span>
+</td>
+<td class="py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded bg-surface-variant hover:bg-white/10 flex items-center justify-center text-white transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-variant hover:bg-error/20 flex items-center justify-center text-error transition-colors" title="Delete">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors group">
+<td class="py-4 font-bold text-white group-hover:text-primary transition-colors">Echo Audio</td>
+<td class="py-4 text-on-surface-variant">Web App</td>
+<td class="py-4">
+<span class="px-3 py-1 bg-surface-variant text-on-surface-variant rounded-full text-xs font-label-bold border border-white/10">Draft</span>
+</td>
+<td class="py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded bg-surface-variant hover:bg-white/10 flex items-center justify-center text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-variant hover:bg-error/20 flex items-center justify-center text-error transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="py-4 font-bold text-white group-hover:text-primary transition-colors">Nexus API</td>
+<td class="py-4 text-on-surface-variant">Backend</td>
+<td class="py-4">
+<span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-xs font-label-bold border border-secondary/20">Review</span>
+</td>
+<td class="py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded bg-surface-variant hover:bg-white/10 flex items-center justify-center text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-variant hover:bg-error/20 flex items-center justify-center text-error transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Experience Management Table -->
+<div class="col-span-1 lg:col-span-2 bg-surface-container rounded-xl p-card-padding border border-white/5 flex flex-col lg:col-start-2">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="work">work</span>
+                            Experience Management
+                        </h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-white/10 text-on-surface-variant font-label-bold text-label-bold uppercase tracking-wider">
+<th class="pb-4 font-normal">Role</th>
+<th class="pb-4 font-normal">Company</th>
+<th class="pb-4 font-normal">Status</th>
+<th class="pb-4 font-normal text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="text-body-md font-body-md">
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors group">
+<td class="py-4 font-bold text-white group-hover:text-primary transition-colors">Senior Engineer</td>
+<td class="py-4 text-on-surface-variant">Tech Corp</td>
+<td class="py-4">
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-label-bold border border-primary/20">Current</span>
+</td>
+<td class="py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded bg-surface-variant hover:bg-white/10 flex items-center justify-center text-white transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-variant hover:bg-error/20 flex items-center justify-center text-error transition-colors" title="Delete">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="py-4 font-bold text-white group-hover:text-primary transition-colors">Full Stack Dev</td>
+<td class="py-4 text-on-surface-variant">Startup Inc</td>
+<td class="py-4">
+<span class="px-3 py-1 bg-surface-variant text-on-surface-variant rounded-full text-xs font-label-bold border border-white/10">Past</span>
+</td>
+<td class="py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+<button class="w-8 h-8 rounded bg-surface-variant hover:bg-white/10 flex items-center justify-center text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-variant hover:bg-error/20 flex items-center justify-center text-error transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="h-24"></div> <!-- Bottom padding for FAB -->
+<!-- Contextual FABs -->
+<div class="fixed bottom-10 right-10 flex flex-col gap-4 z-50">
+<button class="bg-primary text-black font-label-bold text-label-bold px-6 py-4 rounded-full flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(83,224,118,0.3)] hover:scale-105 hover:shadow-[0_0_40px_rgba(83,224,118,0.5)] transition-all duration-300">
+<span class="material-symbols-outlined font-bold" data-icon="add">add</span>
+                Add New Project
+            </button>
+<button class="bg-primary text-black font-label-bold text-label-bold px-6 py-4 rounded-full flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(83,224,118,0.3)] hover:scale-105 hover:shadow-[0_0_40px_rgba(83,224,118,0.5)] transition-all duration-300">
+<span class="material-symbols-outlined font-bold" data-icon="add">add</span>
+                Add New Experience
+            </button>
+</div>
+</main>
+</div>
+<!-- MFA Login Overlay Modal (Hidden by default, dark-themed, green focus states) -->
+<div class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md" id="mfaModal">
+<!-- Close trigger background -->
+<div class="absolute inset-0 cursor-pointer" onclick="document.getElementById('mfaModal').classList.add('hidden')"></div>
+<!-- Modal Content -->
+<div class="bg-surface-container w-full max-w-md rounded-2xl p-10 border border-white/10 shadow-2xl relative z-10 overflow-hidden group">
+<!-- Glow effect -->
+<div class="absolute -top-20 -left-20 w-48 h-48 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors duration-700"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-white m-0">Security Check</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Enter the code from your authenticator app.</p>
+</div>
+<button class="text-on-surface-variant hover:text-white transition-colors" onclick="document.getElementById('mfaModal').classList.add('hidden')">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<form class="flex flex-col gap-5">
+<div>
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-2 text-center">6-Digit Code</label>
+<div class="flex gap-2 justify-center">
+<input class="w-12 h-14 bg-surface-variant border border-white/5 rounded-lg text-center text-xl text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md" maxlength="1" type="text">
+<input class="w-12 h-14 bg-surface-variant border border-white/5 rounded-lg text-center text-xl text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md" maxlength="1" type="text">
+<input class="w-12 h-14 bg-surface-variant border border-white/5 rounded-lg text-center text-xl text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md" maxlength="1" type="text">
+<input class="w-12 h-14 bg-surface-variant border border-white/5 rounded-lg text-center text-xl text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md" maxlength="1" type="text">
+<input class="w-12 h-14 bg-surface-variant border border-white/5 rounded-lg text-center text-xl text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md" maxlength="1" type="text">
+<input class="w-12 h-14 bg-surface-variant border border-white/5 rounded-lg text-center text-xl text-white placeholder-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md" maxlength="1" type="text">
+</div>
+</div>
+<button class="mt-4 w-full bg-primary text-black font-label-bold text-label-bold py-3 rounded-lg hover:bg-primary-fixed hover:scale-[1.02] transition-all flex justify-center items-center gap-2" onclick="document.getElementById('mfaModal').classList.add('hidden')" type="button">
+<span>Verify &amp; Continue</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="verified_user">verified_user</span>
+</button>
+<p class="text-center text-sm text-on-surface-variant mt-2">Having trouble? <a class="text-primary hover:underline" href="#">Use recovery code</a></p>
+</form>
+</div>
+</div>
+</div>
+</body></html>

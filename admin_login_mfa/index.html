@@ -1,0 +1,304 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Admin Login - Dev Wrapped</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Montserrat:wght@700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#3d4a3d",
+                    "primary-fixed": "#72fe8f",
+                    "on-primary": "#003914",
+                    "on-primary-container": "#004118",
+                    "surface-variant": "#353534",
+                    "tertiary-container": "#ff7297",
+                    "secondary-fixed": "#f6d9ff",
+                    "primary-fixed-dim": "#53e076",
+                    "error-container": "#93000a",
+                    "on-error": "#690005",
+                    "surface-container": "#201f1f",
+                    "inverse-on-surface": "#313030",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-surface": "#e5e2e1",
+                    "on-secondary-fixed": "#310049",
+                    "on-secondary": "#500074",
+                    "tertiary": "#ffb1c1",
+                    "primary": "#53e076",
+                    "surface-bright": "#393939",
+                    "on-primary-fixed-variant": "#005320",
+                    "on-tertiary-fixed-variant": "#90003e",
+                    "tertiary-fixed": "#ffd9df",
+                    "secondary-fixed-dim": "#e8b3ff",
+                    "surface-container-highest": "#353534",
+                    "secondary": "#e8b3ff",
+                    "on-primary-fixed": "#002108",
+                    "surface-tint": "#53e076",
+                    "surface-container-low": "#1c1b1b",
+                    "on-surface-variant": "#bccbb9",
+                    "error": "#ffb4ab",
+                    "on-error-container": "#ffdad6",
+                    "surface-dim": "#131313",
+                    "on-tertiary-container": "#730030",
+                    "on-tertiary": "#66002a",
+                    "surface": "#131313",
+                    "secondary-container": "#a402e9",
+                    "on-secondary-fixed-variant": "#7200a3",
+                    "primary-container": "#1db954",
+                    "inverse-primary": "#006e2d",
+                    "tertiary-fixed-dim": "#ffb1c1",
+                    "surface-container-high": "#2a2a2a",
+                    "on-tertiary-fixed": "#3f0017",
+                    "inverse-surface": "#e5e2e1",
+                    "on-secondary-container": "#f9e0ff",
+                    "background": "#131313",
+                    "on-background": "#e5e2e1",
+                    "outline": "#869585"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-gap": "80px",
+                    "margin-mobile": "16px",
+                    "container-max": "1200px",
+                    "margin-desktop": "48px",
+                    "gutter": "24px",
+                    "card-padding": "24px"
+            },
+            "fontFamily": {
+                    "stats-number": [
+                            "Montserrat"
+                    ],
+                    "display-xl-mobile": [
+                            "Montserrat"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "display-xl": [
+                            "Montserrat"
+                    ],
+                    "label-bold": [
+                            "Inter"
+                    ],
+                    "headline-lg": [
+                            "Montserrat"
+                    ],
+                    "headline-md": [
+                            "Montserrat"
+                    ]
+            },
+            "fontSize": {
+                    "stats-number": [
+                            "40px",
+                            {
+                                    "lineHeight": "48px",
+                                    "fontWeight": "900"
+                            }
+                    ],
+                    "display-xl-mobile": [
+                            "48px",
+                            {
+                                    "lineHeight": "52px",
+                                    "letterSpacing": "-0.03em",
+                                    "fontWeight": "900"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "display-xl": [
+                            "72px",
+                            {
+                                    "lineHeight": "80px",
+                                    "letterSpacing": "-0.04em",
+                                    "fontWeight": "900"
+                            }
+                    ],
+                    "label-bold": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "700"
+                            }
+                    }
+            }
+          },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(24, 24, 24, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 20px rgba(83, 224, 118, 0.05);
+        }
+        
+        .code-input {
+            background: rgba(42, 42, 42, 0.6);
+            border: 1px solid rgba(134, 149, 133, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .code-input:focus {
+            border-color: #53e076;
+            box-shadow: 0 0 15px rgba(83, 224, 118, 0.2);
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: #53e076;
+            color: #000000;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(83, 224, 118, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col relative overflow-hidden font-body-md bg-surface">
+<!-- Background Shader -->
+
+<div class="absolute inset-0 bg-background/60 z-0 pointer-events-none"></div>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex items-center justify-center relative z-10 px-margin-mobile md:px-margin-desktop py-section-gap">
+<div class="glass-card w-full max-w-md rounded-xl p-card-padding flex flex-col items-center text-center space-y-8 bg-surface-container">
+<!-- Header -->
+<div class="flex flex-col items-center space-y-4">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center border border-white/5 shadow-[0_0_30px_rgba(83,224,118,0.2)] bg-surface-container-high">
+<span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 1;">
+                        shield_person
+                    </span>
+</div>
+<h1 class="font-headline-md text-headline-md text-white tracking-tight">Admin Authentication</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[280px]">
+                    Open Google Authenticator and scan the QR code, or enter your 6-digit verification code.
+                </p>
+</div>
+<!-- QR Code Placeholder -->
+<div class="bg-white p-2 rounded-lg shadow-lg border-white/5">
+<img class="w-40 h-40 object-cover rounded-md" data-alt="A high-contrast, crisp black and white QR code designed for a sleek, modern digital interface. The QR code should look highly realistic and scannable, slightly rounded corners on the data modules, set against a pure white background for maximum contrast. The style aligns with a secure, minimalist dark-mode application aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpufLQlhZ9Ayg1nIXju7yj6WFtINFIexAm8wIvaYZAFG9enSw0tEmOX7tsfzmKZE_8Ogoer1PcGkBonRR6iaSi2ULUHMBigeh1U3ijg6f_u4m_08INXpoZ7R5Lemsi4iuvLMD8L3SwVyVoe4sPtN9lutrGeoEN00biiOVQVnH6nD1RoOKXqTj-k5LI9C2MtyeUV5FwYZX-RGVJO9V3-xBG_8aFLKMJSnbk95znE2PxLkOO-M1TtCLR6LJonHKWVoQtyDhNkohde3ep">
+</div>
+<!-- Code Input Form -->
+<form action="#" class="w-full flex flex-col items-center space-y-8" id="mfa-form" method="POST">
+<div class="flex justify-between w-full gap-2 sm:gap-3" id="otp-inputs">
+<input aria-label="Digit 1" autocomplete="off" class="code-input w-12 h-14 sm:w-14 sm:h-16 text-center font-stats-number text-headline-lg rounded-lg text-white" maxlength="1" type="text">
+<input aria-label="Digit 2" autocomplete="off" class="code-input w-12 h-14 sm:w-14 sm:h-16 text-center font-stats-number text-headline-lg rounded-lg text-white" maxlength="1" type="text">
+<input aria-label="Digit 3" autocomplete="off" class="code-input w-12 h-14 sm:w-14 sm:h-16 text-center font-stats-number text-headline-lg rounded-lg text-white" maxlength="1" type="text">
+<input aria-label="Digit 4" autocomplete="off" class="code-input w-12 h-14 sm:w-14 sm:h-16 text-center font-stats-number text-headline-lg rounded-lg text-white" maxlength="1" type="text">
+<input aria-label="Digit 5" autocomplete="off" class="code-input w-12 h-14 sm:w-14 sm:h-16 text-center font-stats-number text-headline-lg rounded-lg text-white" maxlength="1" type="text">
+<input aria-label="Digit 6" autocomplete="off" class="code-input w-12 h-14 sm:w-14 sm:h-16 text-center font-stats-number text-headline-lg rounded-lg text-white" maxlength="1" type="text">
+</div>
+<button class="btn-primary w-full py-4 rounded-full font-label-bold text-label-bold flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-xl">
+                        login
+                    </span>
+                    Verify &amp; Enter
+                </button>
+</form>
+</div>
+</main>
+<!-- Footer Component from JSON -->
+<footer class="bg-surface text-primary font-body-md text-body-md w-full py-section-gap border-t border-white/5 relative z-10 bg-surface-container-lowest">
+<div class="flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto px-margin-desktop gap-6 md:gap-0">
+<div class="font-display-xl text-headline-md text-primary tracking-tighter">
+                Dev Wrapped
+            </div>
+<div class="text-on-surface-variant text-sm">
+                © 2024 Dev Wrapped. All rights reserved.
+            </div>
+<nav class="flex gap-6">
+<a class="text-on-surface-variant hover:text-white opacity-40 hover:opacity-100 transition-opacity duration-300" href="#">
+                    GitHub
+                </a>
+<a class="text-on-surface-variant hover:text-white opacity-40 hover:opacity-100 transition-opacity duration-300" href="#">
+                    LinkedIn
+                </a>
+<a class="text-on-surface-variant hover:text-white opacity-40 hover:opacity-100 transition-opacity duration-300" href="#">
+                    Email
+                </a>
+<a class="text-on-surface-variant hover:text-white opacity-40 hover:opacity-100 transition-opacity duration-300" href="#">
+                    Admin
+                </a>
+</nav>
+</div>
+</footer>
+<script>
+        // Simple logic to auto-advance focus on OTP inputs
+        const inputs = document.querySelectorAll('#otp-inputs input');
+        
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+            
+            // Allow pasting full code
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedData = e.clipboardData.getData('text').slice(0, 6).replace(/[^0-9]/g, '');
+                if (pastedData) {
+                    for (let i = 0; i < pastedData.length; i++) {
+                        if (inputs[i]) {
+                            inputs[i].value = pastedData[i];
+                            if (i < inputs.length - 1) inputs[i+1].focus();
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+
+</body></html>

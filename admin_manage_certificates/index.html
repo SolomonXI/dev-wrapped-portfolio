@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manage Certificates - Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#ffb1c1",
+                      "surface-bright": "#393939",
+                      "secondary-fixed-dim": "#e8b3ff",
+                      "tertiary-fixed": "#ffd9df",
+                      "surface-container-high": "#2a2a2a",
+                      "tertiary-fixed-dim": "#ffb1c1",
+                      "on-secondary-fixed-variant": "#7200a3",
+                      "on-primary-fixed": "#002108",
+                      "tertiary-container": "#ff7297",
+                      "primary": "#53e076",
+                      "error-container": "#93000a",
+                      "error": "#ffb4ab",
+                      "surface-tint": "#53e076",
+                      "primary-fixed": "#72fe8f",
+                      "on-primary-fixed-variant": "#005320",
+                      "on-tertiary-fixed": "#3f0017",
+                      "on-secondary": "#500074",
+                      "inverse-surface": "#e5e2e1",
+                      "on-secondary-fixed": "#310049",
+                      "on-primary": "#003914",
+                      "inverse-on-surface": "#313030",
+                      "background": "#131313",
+                      "secondary": "#e8b3ff",
+                      "inverse-primary": "#006e2d",
+                      "surface-container": "#201f1f",
+                      "surface-dim": "#131313",
+                      "on-tertiary": "#66002a",
+                      "on-error": "#690005",
+                      "on-secondary-container": "#f9e0ff",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-low": "#1c1b1b",
+                      "primary-container": "#1db954",
+                      "on-surface": "#e5e2e1",
+                      "primary-fixed-dim": "#53e076",
+                      "secondary-container": "#a402e9",
+                      "on-primary-container": "#004118",
+                      "on-surface-variant": "#bccbb9",
+                      "surface-container-highest": "#353534",
+                      "surface-variant": "#353534",
+                      "outline-variant": "#3d4a3d",
+                      "on-tertiary-container": "#730030",
+                      "surface": "#131313",
+                      "surface-container-lowest": "#0e0e0e",
+                      "secondary-fixed": "#f6d9ff",
+                      "on-tertiary-fixed-variant": "#90003e",
+                      "on-background": "#e5e2e1",
+                      "outline": "#869585"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max": "1200px",
+                      "card-padding": "24px",
+                      "margin-desktop": "48px",
+                      "margin-mobile": "16px",
+                      "section-gap": "80px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "display-xl-mobile": [
+                              "Montserrat"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "stats-number": [
+                              "Montserrat"
+                      ],
+                      "headline-md": [
+                              "Montserrat"
+                      ],
+                      "headline-lg": [
+                              "Montserrat"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "label-bold": [
+                              "Inter"
+                      ],
+                      "display-xl": [
+                              "Montserrat"
+                      ]
+              },
+              "fontSize": {
+                      "display-xl-mobile": [
+                              "48px",
+                              {
+                                      "lineHeight": "52px",
+                                      "letterSpacing": "-0.03em",
+                                      "fontWeight": "900"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "stats-number": [
+                              "40px",
+                              {
+                                      "lineHeight": "48px",
+                                      "fontWeight": "900"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-bold": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-xl": [
+                              "72px",
+                              {
+                                      "lineHeight": "80px",
+                                      "letterSpacing": "-0.04em",
+                                      "fontWeight": "900"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- Side Navigation Shell -->
+<aside class="bg-surface-container h-screen w-64 fixed left-0 top-0 shadow-xl hidden md:flex flex-col py-6 gap-2 border-r border-surface-container-high z-40">
+<!-- Brand / Header -->
+<div class="px-6 pb-6 mb-4 border-b border-surface-container-high">
+<div class="flex items-center gap-4 mb-4">
+<img alt="Admin Avatar" class="w-12 h-12 rounded-full object-cover border border-white/10" data-alt="A stylized minimalist avatar or profile picture representing a developer administrator, rendered in a high-contrast dark theme style with subtle neon green and purple accents, conveying a sense of expertise and control within a digital environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDislobwiRaUjtRPrlBb2NO8sQ1GtZp9pWN7gGOgBua8LQHPWADSb1grluniWltUi5LlsZUHoxaraZlK59ZpBY3rBNGmNPSsrPBAyismnb7PhKd5IDzsRrntiQG9xCNLgsol4dZ9QtdNa4zOnQyW2xeSvzG3giKfuQ3kESqdplQXfQlJQ8L-6ZoB8VlxXfzZ8RqreezsPemwSQqMisT5F8Y97U_rIV0KAGXZ3M4NTRrclSb2Wx5_4ONlK0J6yxhUQhqToMWgSa0HUwM"/>
+<div>
+<h1 class="font-label-bold text-label-bold text-on-surface">Admin Panel</h1>
+<p class="font-body-md text-sm text-on-surface-variant">Developer Mode</p>
+</div>
+</div>
+<div class="font-display-xl text-headline-md text-primary font-black tracking-tighter">
+                Dev Wrapped
+            </div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 overflow-y-auto px-2 space-y-1">
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+<span class="font-label-bold text-label-bold">Overview</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">code</span>
+<span class="font-label-bold text-label-bold">Projects</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">psychology</span>
+<span class="font-label-bold text-label-bold">Skills</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">work</span>
+<span class="font-label-bold text-label-bold">Experience</span>
+</a>
+<!-- Active State using intent matching 'Certificates' -> Settings / Management -->
+<a class="bg-primary-container text-on-primary-container rounded-lg mx-2 px-4 py-3 flex items-center gap-3 active:scale-95 transition-transform shadow-[0_0_15px_rgba(29,185,84,0.3)]" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</a>
+</nav>
+<!-- Footer / CTA -->
+<div class="px-4 mt-auto">
+<button class="w-full font-label-bold text-label-bold py-3 px-4 text-on-surface-variant hover:text-white hover:bg-surface-variant rounded-lg transition-colors flex items-center gap-3 justify-center border border-white/5">
+<span class="material-symbols-outlined text-sm">logout</span>
+                Logout
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto overflow-y-auto">
+<header class="mb-section-gap">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Manage Certificates</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Add new certifications or manage existing ones to showcase on your Dev Wrapped profile.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Upload / Add New Form (Bento Style) -->
+<section class="lg:col-span-5 bg-surface-container-low rounded-xl p-card-padding border border-white/5 shadow-lg relative overflow-hidden group hover:border-white/10 transition-colors">
+<!-- Subtle Gradient Glow Top -->
+<div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">add_circle</span>
+                    Add Credential
+                </h3>
+<form class="space-y-6">
+<div>
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-2" for="cert-name">Certificate Name</label>
+<input class="w-full bg-surface-container-high border border-outline-variant rounded-lg py-3 px-4 text-on-surface placeholder-on-surface-variant/50 focus:border-primary focus:ring-1 focus:ring-primary transition-all focus:outline-none font-body-md text-body-md" id="cert-name" placeholder="e.g. AWS Certified Solutions Architect" type="text"/>
+</div>
+<div>
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-2" for="issuing-org">Issuing Organization</label>
+<input class="w-full bg-surface-container-high border border-outline-variant rounded-lg py-3 px-4 text-on-surface placeholder-on-surface-variant/50 focus:border-primary focus:ring-1 focus:ring-primary transition-all focus:outline-none font-body-md text-body-md" id="issuing-org" placeholder="e.g. Amazon Web Services" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-2" for="issue-date">Issue Date</label>
+<input class="w-full bg-surface-container-high border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all focus:outline-none font-body-md text-body-md [color-scheme:dark]" id="issue-date" type="date"/>
+</div>
+<div>
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-2" for="expiry-date">Expiry Date (Optional)</label>
+<input class="w-full bg-surface-container-high border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all focus:outline-none font-body-md text-body-md [color-scheme:dark]" id="expiry-date" type="date"/>
+</div>
+</div>
+<div>
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-2" for="credential-url">Credential URL</label>
+<input class="w-full bg-surface-container-high border border-outline-variant rounded-lg py-3 px-4 text-on-surface placeholder-on-surface-variant/50 focus:border-primary focus:ring-1 focus:ring-primary transition-all focus:outline-none font-body-md text-body-md" id="credential-url" placeholder="https://..." type="url"/>
+</div>
+<div class="pt-2">
+<button class="w-full bg-primary-container text-on-primary-container hover:bg-primary transition-colors duration-300 font-label-bold text-label-bold py-4 px-6 rounded-lg shadow-[0_0_20px_rgba(29,185,84,0.2)] hover:shadow-[0_0_30px_rgba(29,185,84,0.4)] flex justify-center items-center gap-2" type="button">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">save</span>
+                            Save Certificate
+                        </button>
+</div>
+</form>
+</section>
+<!-- List / Existing Certificates -->
+<section class="lg:col-span-7 bg-surface-container-low rounded-xl p-card-padding border border-white/5 shadow-lg">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">verified</span>
+                        Active Certifications
+                    </h3>
+<span class="bg-surface-container-highest text-on-surface-variant font-label-bold text-label-bold px-3 py-1 rounded-full text-xs">3 Total</span>
+</div>
+<div class="space-y-4">
+<!-- Cert Item 1 -->
+<div class="group bg-surface-container-high hover:bg-surface-container-highest transition-colors rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border border-transparent hover:border-white/5 relative overflow-hidden">
+<!-- Left indicator line -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex items-center gap-4 pl-2">
+<div class="w-12 h-12 bg-surface-container-lowest rounded-lg flex items-center justify-center border border-white/5 shadow-inner">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">cloud</span>
+</div>
+<div>
+<h4 class="font-label-bold text-label-bold text-on-surface">AWS Certified Solutions Architect</h4>
+<p class="font-body-md text-sm text-on-surface-variant">Amazon Web Services • Issued Jan 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors bg-surface-container-lowest hover:bg-surface-container rounded-md border border-white/5">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors bg-surface-container-lowest hover:bg-surface-container rounded-md border border-white/5">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+<a class="p-2 text-on-surface-variant hover:text-secondary transition-colors bg-surface-container-lowest hover:bg-surface-container rounded-md border border-white/5" href="#">
+<span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Cert Item 2 -->
+<div class="group bg-surface-container-high hover:bg-surface-container-highest transition-colors rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border border-transparent hover:border-white/5 relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex items-center gap-4 pl-2">
+<div class="w-12 h-12 bg-surface-container-lowest rounded-lg flex items-center justify-center border border-white/5 shadow-inner">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">code</span>
+</div>
+<div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Meta Front-End Developer Professional</h4>
+<p class="font-body-md text-sm text-on-surface-variant">Coursera • Issued Nov 2022</p>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors bg-surface-container-lowest hover:bg-surface-container rounded-md border border-white/5">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors bg-surface-container-lowest hover:bg-surface-container rounded-md border border-white/5">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+<a class="p-2 text-on-surface-variant hover:text-secondary transition-colors bg-surface-container-lowest hover:bg-surface-container rounded-md border border-white/5" href="#">
+<span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Cert Item 3 -->
+<div class="group bg-surface-container-high hover:bg-surface-container-highest transition-colors rounded-lg p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border border-transparent hover:border-white/5 relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex items-center gap-4 pl-2">
+<div class="w-12 h-12 bg-surface-container-lowest rounded-lg flex items-center justify-center border border-white/5 shadow-inner">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Certified Kubernetes Administrator (CKA)</h4>
+<p class="font-body-md text-sm text-on-surface-variant">Cloud Native Computing Foundation • Issued Aug 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors bg-surface-container-lowest hover:bg-surface-container rounded-md border border-white/5">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors bg-surface-container-lowest hover:bg-surface-container rounded-md border border-white/5">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+<a class="p-2 text-on-surface-variant hover:text-secondary transition-colors bg-surface-container-lowest hover:bg-surface-container rounded-md border border-white/5" href="#">
+<span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>
