@@ -13,20 +13,40 @@
     "email": "solomon.freelancing@gmail.com"
   },
   "socials": [
-    { "label": "GitHub", "url": "https://github.com/SolomonXI" },
-    { "label": "Email", "url": "mailto:solomon.freelancing@gmail.com" }
+    {
+      "label": "GitHub",
+      "url": "https://github.com/SolomonXI"
+    },
+    {
+      "label": "Email",
+      "url": "mailto:solomon.freelancing@gmail.com"
+    }
   ],
   "stats": [
-    { "value": "9", "label": "Public repositories" },
-    { "value": "7", "label": "Portfolio projects" },
-    { "value": "2021", "label": "First tech venture" }
+    {
+      "value": "9",
+      "label": "Public repositories"
+    },
+    {
+      "value": "7",
+      "label": "Portfolio projects"
+    },
+    {
+      "value": "2021",
+      "label": "First tech venture"
+    }
   ],
   "projects": [
     {
       "title": "SignalCV",
       "description": "An evidence-first CV analysis and resume-building workspace with explainable scoring, job targeting, structured editing, and ATS-safe exports.",
-      "tags": ["Next.js", "TypeScript", "FastAPI", "AI"],
-      "image": "",
+      "tags": [
+        "Next.js",
+        "TypeScript",
+        "FastAPI",
+        "AI"
+      ],
+      "image": "/assets/images/projects/signalcv.webp",
       "liveUrl": "https://www.signalcv.studio",
       "repoUrl": "",
       "featured": true
@@ -34,8 +54,12 @@
     {
       "title": "Dev Wrapped",
       "description": "A personal portfolio with a secure admin editor, instant live preview, and persistent content updates without editing source code.",
-      "tags": ["JavaScript", "Vercel", "Admin"],
-      "image": "",
+      "tags": [
+        "JavaScript",
+        "Vercel",
+        "Admin"
+      ],
+      "image": "/assets/images/projects/dev-wrapped.webp",
       "liveUrl": "https://dev-wrapped-portfolio.vercel.app",
       "repoUrl": "https://github.com/SolomonXI/dev-wrapped-portfolio",
       "featured": true
@@ -43,8 +67,12 @@
     {
       "title": "Spotify Stats Dashboard",
       "description": "A local-first dashboard that imports Spotify data exports to calculate and visualise listening history and patterns.",
-      "tags": ["React", "Analytics", "Spotify"],
-      "image": "",
+      "tags": [
+        "React",
+        "Analytics",
+        "Spotify"
+      ],
+      "image": "/assets/images/projects/spotify-stats.webp",
       "liveUrl": "https://spotify-stats-dashboard-eight.vercel.app",
       "repoUrl": "",
       "featured": false
@@ -52,8 +80,12 @@
     {
       "title": "Glow-Up Command Deck",
       "description": "A mobile-first progressive web app for managing a structured 30-day routine, daily tasks, offline access, and reminders.",
-      "tags": ["PWA", "Mobile", "Productivity"],
-      "image": "",
+      "tags": [
+        "PWA",
+        "Mobile",
+        "Productivity"
+      ],
+      "image": "/assets/images/projects/glow-up-command-deck.webp",
       "liveUrl": "https://glow-up-timetable-pwa.vercel.app",
       "repoUrl": "",
       "featured": false
@@ -61,8 +93,12 @@
     {
       "title": "Milo Finance Tracker",
       "description": "A personal finance tracker for organising budgets, monitoring spending, and following financial goals.",
-      "tags": ["Next.js", "Finance", "Tracking"],
-      "image": "",
+      "tags": [
+        "Next.js",
+        "Finance",
+        "Tracking"
+      ],
+      "image": "/assets/images/projects/milo-finance.svg",
       "liveUrl": "https://milo-finance-tracker.vercel.app",
       "repoUrl": "",
       "featured": false
@@ -70,8 +106,12 @@
     {
       "title": "Clearline",
       "description": "A React-based personal finance operating system for bringing financial information into one clear interface.",
-      "tags": ["React", "Vite", "Finance"],
-      "image": "",
+      "tags": [
+        "React",
+        "Vite",
+        "Finance"
+      ],
+      "image": "/assets/images/projects/clearline.webp",
       "liveUrl": "https://clearline-liart.vercel.app",
       "repoUrl": "https://github.com/SolomonXI/clearline",
       "featured": false
@@ -79,8 +119,12 @@
     {
       "title": "Shadow Routine",
       "description": "An Expo-based routine tracker designed to support consistent day planning and habit building.",
-      "tags": ["Expo", "Mobile", "Productivity"],
-      "image": "",
+      "tags": [
+        "Expo",
+        "Mobile",
+        "Productivity"
+      ],
+      "image": "/assets/images/projects/shadow-routine.svg",
       "liveUrl": "",
       "repoUrl": "",
       "featured": false
@@ -90,27 +134,60 @@
     {
       "category": "Technical",
       "items": [
-        { "name": "TypeScript", "level": 92 },
-        { "name": "Next.js", "level": 88 },
-        { "name": "React", "level": 86 },
-        { "name": "Python", "level": 84 },
-        { "name": "Expo", "level": 80 }
+        {
+          "name": "TypeScript",
+          "level": 92
+        },
+        {
+          "name": "Next.js",
+          "level": 88
+        },
+        {
+          "name": "React",
+          "level": 86
+        },
+        {
+          "name": "Python",
+          "level": 84
+        },
+        {
+          "name": "Expo",
+          "level": 80
+        }
       ]
     },
     {
       "category": "Operations",
       "items": [
-        { "name": "Reliability", "level": 95 },
-        { "name": "Record keeping", "level": 92 },
-        { "name": "Scheduling", "level": 90 }
+        {
+          "name": "Reliability",
+          "level": 95
+        },
+        {
+          "name": "Record keeping",
+          "level": 92
+        },
+        {
+          "name": "Scheduling",
+          "level": 90
+        }
       ]
     },
     {
       "category": "Support",
       "items": [
-        { "name": "Communication", "level": 93 },
-        { "name": "Customer service", "level": 90 },
-        { "name": "Coordination", "level": 88 }
+        {
+          "name": "Communication",
+          "level": 93
+        },
+        {
+          "name": "Customer service",
+          "level": 90
+        },
+        {
+          "name": "Coordination",
+          "level": 88
+        }
       ]
     }
   ],
@@ -124,7 +201,8 @@
         "Build web, mobile, and AI-assisted software projects.",
         "Keep technical work organised and well documented.",
         "Manage project scope, priorities, and delivery independently."
-      ]
+      ],
+      "image": "/assets/images/experience/independent-ai.svg"
     },
     {
       "role": "Software Engineering Student",
@@ -135,7 +213,8 @@
         "Develop software engineering knowledge through academic study.",
         "Build practical projects across frontend, backend, mobile, and AI workflows.",
         "Strengthen problem-solving, documentation, and collaboration skills."
-      ]
+      ],
+      "image": "/assets/images/experience/bournemouth-university.svg"
     },
     {
       "role": "Front-End Software Engineer & Maintainer",
@@ -146,7 +225,8 @@
         "Built and maintained customer-facing frontend interfaces.",
         "Handled ongoing website maintenance and frontend updates.",
         "Shared responsibility for operating and maintaining the hosting service."
-      ]
+      ],
+      "image": "/assets/images/experience/quackhost.svg"
     }
   ],
   "certificates": []

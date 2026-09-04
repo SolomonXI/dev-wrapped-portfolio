@@ -58,7 +58,7 @@
     },
     experience() {
       const list = data.experience || [];
-      return `<header><div class="eyebrow">Career journey</div><h1>Experience <span class="gradient-text">unfolded.</span></h1><p class="lede">Roles, responsibilities, and measurable impact.</p></header><section class="section timeline">${list.length ? list.map(item => `<article class="card timeline-item"><div class="period">${escape(item.period)}</div><h2>${escape(item.role)}</h2><p class="company">${escape(item.company)}</p>${item.summary ? `<p class="muted">${escape(item.summary)}</p>` : ''}${(item.highlights || []).length ? `<ul>${item.highlights.map(h => `<li>${escape(h)}</li>`).join('')}</ul>` : ''}</article>`).join('') : empty('No experience yet.')}</section>`;
+      return `<header><div class="eyebrow">Career journey</div><h1>Experience <span class="gradient-text">unfolded.</span></h1><p class="lede">Roles, responsibilities, and measurable impact.</p></header><section class="section timeline">${list.length ? list.map(item => `<article class="card timeline-item">${item.image ? `<img class="experience-image" src="${escape(safeUrl(item.image))}" alt="${escape(item.company || item.role)} visual">` : ''}<div class="period">${escape(item.period)}</div><h2>${escape(item.role)}</h2><p class="company">${escape(item.company)}</p>${item.summary ? `<p class="muted">${escape(item.summary)}</p>` : ''}${(item.highlights || []).length ? `<ul>${item.highlights.map(h => `<li>${escape(h)}</li>`).join('')}</ul>` : ''}</article>`).join('') : empty('No experience yet.')}</section>`;
     },
     certificates() {
       const list = data.certificates || [];
