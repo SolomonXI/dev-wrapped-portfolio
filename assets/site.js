@@ -8,7 +8,7 @@
 
   let data;
   try {
-    const response = await fetch('/data/site.json', { cache: 'no-store' });
+    const response = await fetch('/api/content', { cache: 'no-store' });
     if (!response.ok) throw new Error('Content could not be loaded');
     data = await response.json();
   } catch (error) {

@@ -1,12 +1,11 @@
 (async function () {
-  const REPO = 'SolomonXI/dev-wrapped-portfolio';
-  const BRANCH = 'main';
-  const FILE = 'data/site.json';
   const editor = document.querySelector('#editor');
   const status = document.querySelector('#status');
-  const tokenInput = document.querySelector('#github-token');
   const previewFrame = document.querySelector('#preview-frame');
+  const loggedOut = document.querySelector('#logged-out');
+  const loggedIn = document.querySelector('#logged-in');
   let state = {};
+  let authenticated = false;
   let previewTimer;
 
   const esc = (value = '') => String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
@@ -77,55 +76,63 @@
 
   async function loadPublished() {
     setStatus('Loading published content…');
-    const response = await fetch(`/data/site.json?t=${Date.now()}`, { cache:'no-store' });
+    const response = await fetch(`/api/content?t=${Date.now()}`, { cache:'no-store' });
     if (!response.ok) throw new Error('Could not load the published content.');
     state = await response.json(); render(); updatePreview(true); setStatus('Published content loaded. Changes below update the preview instantly.', 'success');
   }
+
+  function showSession(isAuthenticated) {
+    authenticated = isAuthenticated;
+    loggedOut.hidden = authenticated;
+    loggedIn.hidden = !authenticated;
+  }
+
+  async function checkSession() {
+    const response = await fetch('/api/admin-auth', { cache:'no-store' });
+    const result = response.ok ? await response.json() : { authenticated:false };
+    showSession(Boolean(result.authenticated));
+    return Boolean(result.authenticated);
+  }
+
+  document.querySelector('#login-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    const password = document.querySelector('#admin-password').value;
+    setStatus('Signing in…');
+    const response = await fetch('/api/admin-auth', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({password}) });
+    const result = await response.json().catch(()=>({}));
+    if (!response.ok) { setStatus(result.error || 'Sign-in failed.', 'error'); return; }
+    document.querySelector('#admin-password').value = '';
+    showSession(true);
+    setStatus('Signed in. You can now save changes directly.', 'success');
+  });
+
+  document.querySelector('#logout').addEventListener('click', async () => {
+    await fetch('/api/admin-auth', { method:'DELETE' });
+    showSession(false);
+    setStatus('Signed out.', 'success');
+  });
 
   document.querySelector('#save-draft').addEventListener('click', () => { localStorage.setItem('devwrapped-draft', JSON.stringify(state)); updatePreview(true); setStatus('Draft saved in this browser and shown in the preview. Use Save & publish to update the public site.', 'success'); });
   document.querySelector('#reset').addEventListener('click', () => loadPublished().catch(e=>setStatus(e.message,'error')));
   document.querySelector('#download').addEventListener('click', () => { const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'})); a.download='devwrapped-content.json'; a.click(); URL.revokeObjectURL(a.href); });
   document.querySelector('#import').addEventListener('change', async event => { try { state=JSON.parse(await event.target.files[0].text()); render(); updatePreview(true); setStatus('Backup imported and displayed in the preview. Review it, then publish.', 'success'); } catch { setStatus('That file is not valid JSON.', 'error'); } });
 
-  async function waitForLive(expected) {
-    const wanted = JSON.stringify(expected);
-    for (let attempt = 0; attempt < 30; attempt++) {
-      setStatus(`GitHub saved the update. Waiting for Vercel deployment${'.'.repeat(attempt % 4)}`, 'success');
-      await new Promise(resolve => setTimeout(resolve, 4000));
-      try {
-        const response = await fetch(`/data/site.json?deployment-check=${Date.now()}`, { cache:'no-store' });
-        if (response.ok && JSON.stringify(await response.json()) === wanted) return true;
-      } catch {}
-    }
-    return false;
-  }
-
   document.querySelector('#publish').addEventListener('click', async () => {
-    const token = tokenInput.value.trim();
-    if (!token) { setStatus('Enter a fine-grained GitHub token first.', 'error'); tokenInput.focus(); return; }
+    if (!authenticated) { showSession(false); setStatus('Sign in before saving.', 'error'); return; }
     try {
-      setStatus('Publishing to GitHub…');
-      const headers = { Accept:'application/vnd.github+json', Authorization:`Bearer ${token}`, 'X-GitHub-Api-Version':'2022-11-28' };
-      const current = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}?ref=${BRANCH}`, { headers });
-      if (!current.ok) throw new Error(`GitHub could not read the content file (${current.status}). Check the token and repository access.`);
-      const { sha } = await current.json();
-      const json = JSON.stringify(state, null, 2) + '\n';
-      const bytes = new TextEncoder().encode(json);
-      let binary=''; bytes.forEach(b=>binary+=String.fromCharCode(b));
-      const saved = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, { method:'PUT', headers:{...headers,'Content-Type':'application/json'}, body:JSON.stringify({message:'Update portfolio content from editor',content:btoa(binary),sha,branch:BRANCH}) });
-      if (!saved.ok) { const detail=await saved.json().catch(()=>({})); throw new Error(detail.message || `GitHub rejected the update (${saved.status}).`); }
+      setStatus('Saving changes…');
+      const saved = await fetch('/api/content', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(state) });
+      const result = await saved.json().catch(()=>({}));
+      if (saved.status === 401) { showSession(false); throw new Error('Your session expired. Please sign in again.'); }
+      if (!saved.ok) throw new Error(result.error || 'The changes could not be saved.');
       localStorage.removeItem('devwrapped-draft');
-      const live = await waitForLive(state);
-      if (live) {
-        updatePreview(true);
-        setStatus('Published successfully — the public website is now showing these changes.', 'success');
-      } else {
-        setStatus('GitHub saved the update, but Vercel is still deploying. The public site should update shortly.', 'success');
-      }
+      updatePreview(true);
+      setStatus('Saved successfully — the public website is now showing these changes.', 'success');
     } catch (error) { setStatus(error.message, 'error'); }
   });
 
   try {
+    await checkSession();
     await loadPublished();
     const draft = localStorage.getItem('devwrapped-draft');
     if (draft && confirm('A browser draft exists. Restore it?')) { state=JSON.parse(draft); render(); updatePreview(true); setStatus('Browser draft restored. Use Save & publish to update the public website.','success'); }

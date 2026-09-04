@@ -16,22 +16,29 @@
   <main class="admin-main">
     <div class="shell admin-layout">
       <aside class="card admin-sidebar">
-        <div class="eyebrow">Publishing</div>
-        <h3>GitHub access</h3>
-        <p class="muted small">Use a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener"><u>fine-grained GitHub token</u></a> with <strong>Contents: Read and write</strong> access to only <code>dev-wrapped-portfolio</code>. It stays in this browser tab and is sent directly to GitHub.</p>
-        <label>Fine-grained token<input id="github-token" type="password" autocomplete="off" placeholder="github_pat_…"></label>
-        <button id="publish" class="button primary wide">Save & publish</button>
-        <button id="save-draft" class="button wide">Save browser draft</button>
-        <button id="download" class="button wide">Download backup</button>
-        <label class="button wide file-button">Import backup<input id="import" type="file" accept="application/json"></label>
-        <button id="reset" class="button wide danger">Reload published version</button>
-        <p id="status" class="status" role="status">Loading published content…</p>
+        <div class="eyebrow">Admin account</div>
+        <div id="logged-out">
+          <h3>Sign in</h3>
+          <p class="muted small">Enter your portfolio administrator password. You will remain signed in securely on this device.</p>
+          <form id="login-form"><label>Password<input id="admin-password" type="password" autocomplete="current-password" required placeholder="Your admin password"></label><button class="button primary wide" type="submit">Sign in</button></form>
+        </div>
+        <div id="logged-in" hidden>
+          <h3>Signed in</h3>
+          <p class="session-ok">● Secure administrator session</p>
+          <button id="publish" class="button primary wide">Save changes</button>
+          <button id="save-draft" class="button wide">Save browser draft</button>
+          <button id="download" class="button wide">Download backup</button>
+          <label class="button wide file-button">Import backup<input id="import" type="file" accept="application/json"></label>
+          <button id="reset" class="button wide danger">Reload saved version</button>
+          <button id="logout" class="button wide">Sign out</button>
+        </div>
+        <p id="status" class="status" role="status">Checking your session…</p>
       </aside>
 
       <section class="editor-column">
         <header class="editor-head"><div><div class="eyebrow">Content management</div><h1>Edit your portfolio.</h1><p class="lede">All visible portfolio content lives here—no more editing HTML.</p></div></header>
         <section class="card live-preview-panel">
-          <header><div><div class="eyebrow">Live preview</div><h2>Homepage preview</h2><p>Updates automatically while you type. The public website changes after <strong>Save & publish</strong>.</p></div><a class="button" href="/" target="_blank">Open public site ↗</a></header>
+          <header><div><div class="eyebrow">Live preview</div><h2>Homepage preview</h2><p>Updates automatically while you type. Select <strong>Save changes</strong> to update the public website immediately.</p></div><a class="button" href="/" target="_blank">Open public site ↗</a></header>
           <div class="preview-frame-wrap"><iframe id="preview-frame" title="Live homepage preview" src="/?preview=1"></iframe></div>
         </section>
         <form id="editor" autocomplete="off"></form>
