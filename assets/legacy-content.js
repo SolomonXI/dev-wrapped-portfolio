@@ -5,9 +5,15 @@
   const main = document.querySelector('main');
 
   try {
-    const response = await fetch('/data/site.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error('Unable to load portfolio content');
-    const data = await response.json();
+    let data;
+    if (new URLSearchParams(location.search).get('preview') === '1') {
+      data = JSON.parse(sessionStorage.getItem('devwrapped-preview') || 'null');
+    }
+    if (!data) {
+      const response = await fetch('/data/site.json', { cache: 'no-store' });
+      if (!response.ok) throw new Error('Unable to load portfolio content');
+      data = await response.json();
+    }
     const profile = data.profile || {};
     const socials = (data.socials || []).filter(item => item.label && item.url);
 

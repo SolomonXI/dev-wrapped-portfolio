@@ -5,7 +5,9 @@
   const editor = document.querySelector('#editor');
   const status = document.querySelector('#status');
   const tokenInput = document.querySelector('#github-token');
+  const previewFrame = document.querySelector('#preview-frame');
   let state = {};
+  let previewTimer;
 
   const esc = (value = '') => String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   const field = (label, path, value = '', opts = {}) => `<label class="${opts.wide ? 'span-2' : ''}">${esc(label)}${opts.type === 'textarea' ? `<textarea data-path='${esc(JSON.stringify(path))}'>${esc(value)}</textarea>` : `<input data-path='${esc(JSON.stringify(path))}' type="${opts.type || 'text'}" value="${esc(value)}" ${opts.placeholder ? `placeholder="${esc(opts.placeholder)}"` : ''}>`}</label>`;
@@ -13,6 +15,14 @@
   const setStatus = (message, type = '') => { status.textContent = message; status.className = `status ${type}`; };
   const get = path => path.reduce((obj, key) => obj?.[key], state);
   const set = (path, value) => { const last = path[path.length - 1]; const target = path.slice(0, -1).reduce((obj, key) => obj[key], state); target[last] = value; };
+  const updatePreview = (immediate = false) => {
+    clearTimeout(previewTimer);
+    const refresh = () => {
+      sessionStorage.setItem('devwrapped-preview', JSON.stringify(state));
+      previewFrame.src = `/?preview=1&t=${Date.now()}`;
+    };
+    if (immediate) refresh(); else previewTimer = setTimeout(refresh, 350);
+  };
 
   function renderRepeater(name, items, fields) {
     if (!items.length) return '<div class="empty">Nothing here yet. Use “Add” to create the first item.</div>';
@@ -53,28 +63,42 @@
     if (last === 'highlights') value = value.split('\n').map(v=>v.trim()).filter(Boolean);
     if (last === 'level') value = Math.max(0, Math.min(100, Number(value) || 0));
     set(path, value);
+    updatePreview();
   });
 
   editor.addEventListener('click', event => {
     const add = event.target.closest('[data-add]');
-    if (add) { const type=add.dataset.add; state[collections[type]].push(structuredClone(templates[type])); render(); return; }
+    if (add) { const type=add.dataset.add; state[collections[type]].push(structuredClone(templates[type])); render(); updatePreview(true); return; }
     const addSkill = event.target.closest('[data-add-skill]');
-    if (addSkill) { const group=state.skills[Number(addSkill.dataset.addSkill)]; (group.items ||= []).push({name:'New skill',level:50}); render(); return; }
+    if (addSkill) { const group=state.skills[Number(addSkill.dataset.addSkill)]; (group.items ||= []).push({name:'New skill',level:50}); render(); updatePreview(true); return; }
     const remove = event.target.closest('[data-remove]');
-    if (remove) { const path=JSON.parse(remove.dataset.remove); const index=path.pop(); get(path).splice(index,1); render(); }
+    if (remove) { const path=JSON.parse(remove.dataset.remove); const index=path.pop(); get(path).splice(index,1); render(); updatePreview(true); }
   });
 
   async function loadPublished() {
     setStatus('Loading published content…');
     const response = await fetch(`/data/site.json?t=${Date.now()}`, { cache:'no-store' });
     if (!response.ok) throw new Error('Could not load the published content.');
-    state = await response.json(); render(); setStatus('Published content loaded.', 'success');
+    state = await response.json(); render(); updatePreview(true); setStatus('Published content loaded. Changes below update the preview instantly.', 'success');
   }
 
-  document.querySelector('#save-draft').addEventListener('click', () => { localStorage.setItem('devwrapped-draft', JSON.stringify(state)); setStatus('Draft saved in this browser.', 'success'); });
+  document.querySelector('#save-draft').addEventListener('click', () => { localStorage.setItem('devwrapped-draft', JSON.stringify(state)); updatePreview(true); setStatus('Draft saved in this browser and shown in the preview. Use Save & publish to update the public site.', 'success'); });
   document.querySelector('#reset').addEventListener('click', () => loadPublished().catch(e=>setStatus(e.message,'error')));
   document.querySelector('#download').addEventListener('click', () => { const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'})); a.download='devwrapped-content.json'; a.click(); URL.revokeObjectURL(a.href); });
-  document.querySelector('#import').addEventListener('change', async event => { try { state=JSON.parse(await event.target.files[0].text()); render(); setStatus('Backup imported. Review it, then publish.', 'success'); } catch { setStatus('That file is not valid JSON.', 'error'); } });
+  document.querySelector('#import').addEventListener('change', async event => { try { state=JSON.parse(await event.target.files[0].text()); render(); updatePreview(true); setStatus('Backup imported and displayed in the preview. Review it, then publish.', 'success'); } catch { setStatus('That file is not valid JSON.', 'error'); } });
+
+  async function waitForLive(expected) {
+    const wanted = JSON.stringify(expected);
+    for (let attempt = 0; attempt < 30; attempt++) {
+      setStatus(`GitHub saved the update. Waiting for Vercel deployment${'.'.repeat(attempt % 4)}`, 'success');
+      await new Promise(resolve => setTimeout(resolve, 4000));
+      try {
+        const response = await fetch(`/data/site.json?deployment-check=${Date.now()}`, { cache:'no-store' });
+        if (response.ok && JSON.stringify(await response.json()) === wanted) return true;
+      } catch {}
+    }
+    return false;
+  }
 
   document.querySelector('#publish').addEventListener('click', async () => {
     const token = tokenInput.value.trim();
@@ -91,13 +115,19 @@
       const saved = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, { method:'PUT', headers:{...headers,'Content-Type':'application/json'}, body:JSON.stringify({message:'Update portfolio content from editor',content:btoa(binary),sha,branch:BRANCH}) });
       if (!saved.ok) { const detail=await saved.json().catch(()=>({})); throw new Error(detail.message || `GitHub rejected the update (${saved.status}).`); }
       localStorage.removeItem('devwrapped-draft');
-      setStatus('Published. Vercel is deploying the update; it usually appears within a minute.', 'success');
+      const live = await waitForLive(state);
+      if (live) {
+        updatePreview(true);
+        setStatus('Published successfully — the public website is now showing these changes.', 'success');
+      } else {
+        setStatus('GitHub saved the update, but Vercel is still deploying. The public site should update shortly.', 'success');
+      }
     } catch (error) { setStatus(error.message, 'error'); }
   });
 
   try {
     await loadPublished();
     const draft = localStorage.getItem('devwrapped-draft');
-    if (draft && confirm('A browser draft exists. Restore it?')) { state=JSON.parse(draft); render(); setStatus('Browser draft restored.','success'); }
+    if (draft && confirm('A browser draft exists. Restore it?')) { state=JSON.parse(draft); render(); updatePreview(true); setStatus('Browser draft restored. Use Save & publish to update the public website.','success'); }
   } catch (error) { setStatus(error.message,'error'); }
 })();
