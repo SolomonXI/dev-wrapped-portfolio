@@ -1,26 +1,44 @@
-Dev Wrapped — site
+# Dev Wrapped
 
-This folder contains a 1:1 export of the portfolio.
+An editable developer portfolio deployed on Vercel.
 
-Local preview
+## Content editor
 
-- Install Vercel CLI: npm i -g vercel
-- Run: vercel dev
+Visit `/admin/` to edit profile details, homepage copy, statistics, projects,
+skills, experience, certificates, and social links.
 
-Contact form
+Publishing uses the GitHub Contents API so the site does not need a database:
 
-- The serverless endpoint is at /api/contact (site/api/contact.js). It will send email via SendGrid if the following env vars are set:
-  - SENDGRID_API_KEY
-  - CONTACT_TO_EMAIL
-  - (optional) CONTACT_FROM_EMAIL
-- If not configured, submissions are logged to server logs.
+1. Create a **fine-grained GitHub personal access token**.
+2. Limit repository access to `SolomonXI/dev-wrapped-portfolio`.
+3. Grant **Contents: Read and write** and no other repository permissions.
+4. Paste it into the editor and choose **Save & publish**.
 
-Deployment
+The token is held only in the open tab. It is not committed, sent to Vercel,
+or saved in local storage. Publishing updates `data/site.json`; the connected
+Vercel project deploys the commit automatically.
 
-- Recommended: Vercel (zero config). From the repo root: vercel --prod
-- Netlify is also supported (move site/api to netlify/functions).
+The editor also supports browser drafts plus JSON backup import/export.
 
-Notes
+## Structure
 
-- Do NOT commit any API keys. Use the hosting provider's secret manager.
-- To make the site fully 1:1, review each subfolder/index.html and update absolute links if needed.
+- `data/site.json` — the single source of truth for visible content
+- `assets/site.js` — loads and renders content on public pages
+- `assets/styles.css` — shared public design
+- `admin/` and `assets/admin.js` — owner-facing visual editor
+- `api/contact.js` — optional SendGrid contact endpoint retained for future use
+
+## Local preview
+
+Serve the repository root with any static server, for example:
+
+```bash
+python3 -m http.server 4173
+```
+
+Then open `http://localhost:4173`.
+
+## Domain
+
+The Vercel project includes `devwrapped.me` and `www.devwrapped.me`. DNS must be
+configured at the registrar before Vercel can issue TLS certificates.

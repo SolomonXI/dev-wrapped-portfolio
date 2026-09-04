@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/admin.css">
+  <title>Dev Wrapped — Content editor</title>
+</head>
+<body>
+  <nav class="site-nav"><div class="shell nav-inner"><a class="brand" href="/">Dev Wrapped Editor</a><div class="nav-links"><a href="/" target="_blank">Open website ↗</a></div></div></nav>
+  <main class="admin-main">
+    <div class="shell admin-layout">
+      <aside class="card admin-sidebar">
+        <div class="eyebrow">Publishing</div>
+        <h3>GitHub access</h3>
+        <p class="muted small">Use a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener"><u>fine-grained GitHub token</u></a> with <strong>Contents: Read and write</strong> access to only <code>dev-wrapped-portfolio</code>. It stays in this browser tab and is sent directly to GitHub.</p>
+        <label>Fine-grained token<input id="github-token" type="password" autocomplete="off" placeholder="github_pat_…"></label>
+        <button id="publish" class="button primary wide">Save & publish</button>
+        <button id="save-draft" class="button wide">Save browser draft</button>
+        <button id="download" class="button wide">Download backup</button>
+        <label class="button wide file-button">Import backup<input id="import" type="file" accept="application/json"></label>
+        <button id="reset" class="button wide danger">Reload published version</button>
+        <p id="status" class="status" role="status">Loading published content…</p>
+      </aside>
+
+      <section class="editor-column">
+        <header class="editor-head"><div><div class="eyebrow">Content management</div><h1>Edit your portfolio.</h1><p class="lede">All visible portfolio content lives here—no more editing HTML.</p></div></header>
+        <form id="editor" autocomplete="off"></form>
+      </section>
+    </div>
+  </main>
+  <script src="/assets/admin.js" defer></script>
+</body>
+</html>

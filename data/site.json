@@ -1,0 +1,28 @@
+{
+  "siteName": "Dev Wrapped",
+  "kicker": "Developer portfolio",
+  "headline": "Osamudiamen’s developer story",
+  "intro": "A living portfolio of projects, skills, experience, and milestones.",
+  "contactText": "Have a project, role, or collaboration in mind? Get in touch.",
+  "profile": {
+    "name": "Osamudiamen Osayande Johnson",
+    "role": "Software Developer",
+    "bio": "Building useful digital products and learning in public.",
+    "location": "United Kingdom",
+    "avatar": "https://avatars.githubusercontent.com/u/146200433?v=4",
+    "email": ""
+  },
+  "socials": [
+    { "label": "GitHub", "url": "https://github.com/SolomonXI" },
+    { "label": "LinkedIn", "url": "" }
+  ],
+  "stats": [
+    { "value": "9", "label": "Public repositories" },
+    { "value": "2023", "label": "GitHub journey started" },
+    { "value": "∞", "label": "Ideas in progress" }
+  ],
+  "projects": [],
+  "skills": [],
+  "experience": [],
+  "certificates": []
+}
