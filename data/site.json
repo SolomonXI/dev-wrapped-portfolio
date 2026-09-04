@@ -136,23 +136,28 @@
       "items": [
         {
           "name": "TypeScript",
-          "level": 92
+          "level": 92,
+          "icon": "/assets/images/skills/typescript.svg"
         },
         {
           "name": "Next.js",
-          "level": 88
+          "level": 88,
+          "icon": "/assets/images/skills/nextjs.svg"
         },
         {
           "name": "React",
-          "level": 86
+          "level": 86,
+          "icon": "/assets/images/skills/react.svg"
         },
         {
           "name": "Python",
-          "level": 84
+          "level": 84,
+          "icon": "/assets/images/skills/python.svg"
         },
         {
           "name": "Expo",
-          "level": 80
+          "level": 80,
+          "icon": "/assets/images/skills/expo.svg"
         }
       ]
     },
@@ -161,15 +166,18 @@
       "items": [
         {
           "name": "Reliability",
-          "level": 95
+          "level": 95,
+          "icon": ""
         },
         {
           "name": "Record keeping",
-          "level": 92
+          "level": 92,
+          "icon": ""
         },
         {
           "name": "Scheduling",
-          "level": 90
+          "level": 90,
+          "icon": ""
         }
       ]
     },
@@ -178,15 +186,18 @@
       "items": [
         {
           "name": "Communication",
-          "level": 93
+          "level": 93,
+          "icon": ""
         },
         {
           "name": "Customer service",
-          "level": 90
+          "level": 90,
+          "icon": ""
         },
         {
           "name": "Coordination",
-          "level": 88
+          "level": 88,
+          "icon": ""
         }
       ]
     }

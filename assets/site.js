@@ -54,7 +54,7 @@
     },
     skills() {
       const groups = data.skills || [];
-      return `<header><div class="eyebrow">Toolkit</div><h1>Skills <span class="gradient-text">mapped.</span></h1><p class="lede">The technologies and disciplines behind the work.</p></header><section class="section"><div class="grid grid-2">${groups.length ? groups.map(g => `<article class="card skill-group"><h2>${escape(g.category)}</h2><div class="skill-list">${(g.items || []).map(item => `<div class="skill-row"><strong>${escape(item.name)}</strong><span class="muted">${escape(item.level)}%</span><div class="meter"><i style="width:${Math.max(0, Math.min(100, Number(item.level) || 0))}%"></i></div></div>`).join('')}</div></article>`).join('') : empty('No skills yet.')}</div></section>`;
+      return `<header><div class="eyebrow">Toolkit</div><h1>Skills <span class="gradient-text">mapped.</span></h1><p class="lede">The technologies and disciplines behind the work.</p></header><section class="section"><div class="grid grid-2">${groups.length ? groups.map(g => `<article class="card skill-group"><h2>${escape(g.category)}</h2><div class="skill-list">${(g.items || []).map(item => `<div class="skill-row"><strong class="skill-name">${item.icon ? `<img class="skill-icon" src="${escape(safeUrl(item.icon))}" alt="${escape(item.name)} logo">` : ''}${escape(item.name)}</strong><span class="muted">${escape(item.level)}%</span><div class="meter"><i style="width:${Math.max(0, Math.min(100, Number(item.level) || 0))}%"></i></div></div>`).join('')}</div></article>`).join('') : empty('No skills yet.')}</div></section>`;
     },
     experience() {
       const list = data.experience || [];
