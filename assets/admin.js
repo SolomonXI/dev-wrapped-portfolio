@@ -112,7 +112,7 @@
     setStatus('Signed out.', 'success');
   });
 
-  document.querySelector('#save-draft').addEventListener('click', () => { localStorage.setItem('devwrapped-draft', JSON.stringify(state)); updatePreview(true); setStatus('Draft saved in this browser and shown in the preview. Use Save & publish to update the public site.', 'success'); });
+  document.querySelector('#save-draft').addEventListener('click', () => { localStorage.setItem('devwrapped-draft', JSON.stringify(state)); updatePreview(true); setStatus('Draft saved in this browser and shown in the preview. Use Save changes to update the public site.', 'success'); });
   document.querySelector('#reset').addEventListener('click', () => loadPublished().catch(e=>setStatus(e.message,'error')));
   document.querySelector('#download').addEventListener('click', () => { const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'})); a.download='devwrapped-content.json'; a.click(); URL.revokeObjectURL(a.href); });
   document.querySelector('#import').addEventListener('change', async event => { try { state=JSON.parse(await event.target.files[0].text()); render(); updatePreview(true); setStatus('Backup imported and displayed in the preview. Review it, then publish.', 'success'); } catch { setStatus('That file is not valid JSON.', 'error'); } });
@@ -135,6 +135,6 @@
     await checkSession();
     await loadPublished();
     const draft = localStorage.getItem('devwrapped-draft');
-    if (draft && confirm('A browser draft exists. Restore it?')) { state=JSON.parse(draft); render(); updatePreview(true); setStatus('Browser draft restored. Use Save & publish to update the public website.','success'); }
+    if (draft && confirm('A browser draft exists. Restore it?')) { state=JSON.parse(draft); render(); updatePreview(true); setStatus('Browser draft restored. Use Save changes to update the public website.','success'); }
   } catch (error) { setStatus(error.message,'error'); }
 })();
