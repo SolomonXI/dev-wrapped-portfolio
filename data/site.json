@@ -1,28 +1,153 @@
 {
   "siteName": "Dev Wrapped",
-  "kicker": "Developer portfolio",
-  "headline": "Osamudiamen’s developer story",
-  "intro": "A living portfolio of projects, skills, experience, and milestones.",
-  "contactText": "Have a project, role, or collaboration in mind? Get in touch.",
+  "kicker": "Software Engineering Student · Builder",
+  "headline": "Solomon’s developer story",
+  "intro": "Software Engineering student building practical, well-documented products across web, mobile, AI, productivity, and personal finance.",
+  "contactText": "Have a placement, freelance project, or collaboration in mind? Let’s talk.",
   "profile": {
-    "name": "Osamudiamen Osayande Johnson",
-    "role": "Software Developer",
-    "bio": "Building useful digital products and learning in public.",
-    "location": "United Kingdom",
+    "name": "Solomon Osayande-Johnson",
+    "role": "Software Engineering Student & Freelance AI Software Engineer",
+    "bio": "I’m organised, logical, and calm under pressure, with experience supporting people, managing my own schedule, and building practical software.",
+    "location": "Bournemouth, UK",
     "avatar": "https://avatars.githubusercontent.com/u/146200433?v=4",
-    "email": ""
+    "email": "solomon.freelancing@gmail.com"
   },
   "socials": [
     { "label": "GitHub", "url": "https://github.com/SolomonXI" },
-    { "label": "LinkedIn", "url": "" }
+    { "label": "Email", "url": "mailto:solomon.freelancing@gmail.com" }
   ],
   "stats": [
     { "value": "9", "label": "Public repositories" },
-    { "value": "2023", "label": "GitHub journey started" },
-    { "value": "∞", "label": "Ideas in progress" }
+    { "value": "7", "label": "Portfolio projects" },
+    { "value": "2021", "label": "First tech venture" }
   ],
-  "projects": [],
-  "skills": [],
-  "experience": [],
+  "projects": [
+    {
+      "title": "SignalCV",
+      "description": "An evidence-first CV analysis and resume-building workspace with explainable scoring, job targeting, structured editing, and ATS-safe exports.",
+      "tags": ["Next.js", "TypeScript", "FastAPI", "AI"],
+      "image": "",
+      "liveUrl": "https://www.signalcv.studio",
+      "repoUrl": "",
+      "featured": true
+    },
+    {
+      "title": "Dev Wrapped",
+      "description": "A personal portfolio with a secure admin editor, instant live preview, and persistent content updates without editing source code.",
+      "tags": ["JavaScript", "Vercel", "Admin"],
+      "image": "",
+      "liveUrl": "https://dev-wrapped-portfolio.vercel.app",
+      "repoUrl": "https://github.com/SolomonXI/dev-wrapped-portfolio",
+      "featured": true
+    },
+    {
+      "title": "Spotify Stats Dashboard",
+      "description": "A local-first dashboard that imports Spotify data exports to calculate and visualise listening history and patterns.",
+      "tags": ["React", "Analytics", "Spotify"],
+      "image": "",
+      "liveUrl": "https://spotify-stats-dashboard-eight.vercel.app",
+      "repoUrl": "",
+      "featured": false
+    },
+    {
+      "title": "Glow-Up Command Deck",
+      "description": "A mobile-first progressive web app for managing a structured 30-day routine, daily tasks, offline access, and reminders.",
+      "tags": ["PWA", "Mobile", "Productivity"],
+      "image": "",
+      "liveUrl": "https://glow-up-timetable-pwa.vercel.app",
+      "repoUrl": "",
+      "featured": false
+    },
+    {
+      "title": "Milo Finance Tracker",
+      "description": "A personal finance tracker for organising budgets, monitoring spending, and following financial goals.",
+      "tags": ["Next.js", "Finance", "Tracking"],
+      "image": "",
+      "liveUrl": "https://milo-finance-tracker.vercel.app",
+      "repoUrl": "",
+      "featured": false
+    },
+    {
+      "title": "Clearline",
+      "description": "A React-based personal finance operating system for bringing financial information into one clear interface.",
+      "tags": ["React", "Vite", "Finance"],
+      "image": "",
+      "liveUrl": "https://clearline-liart.vercel.app",
+      "repoUrl": "https://github.com/SolomonXI/clearline",
+      "featured": false
+    },
+    {
+      "title": "Shadow Routine",
+      "description": "An Expo-based routine tracker designed to support consistent day planning and habit building.",
+      "tags": ["Expo", "Mobile", "Productivity"],
+      "image": "",
+      "liveUrl": "",
+      "repoUrl": "",
+      "featured": false
+    }
+  ],
+  "skills": [
+    {
+      "category": "Technical",
+      "items": [
+        { "name": "TypeScript", "level": 92 },
+        { "name": "Next.js", "level": 88 },
+        { "name": "React", "level": 86 },
+        { "name": "Python", "level": 84 },
+        { "name": "Expo", "level": 80 }
+      ]
+    },
+    {
+      "category": "Operations",
+      "items": [
+        { "name": "Reliability", "level": 95 },
+        { "name": "Record keeping", "level": 92 },
+        { "name": "Scheduling", "level": 90 }
+      ]
+    },
+    {
+      "category": "Support",
+      "items": [
+        { "name": "Communication", "level": 93 },
+        { "name": "Customer service", "level": 90 },
+        { "name": "Coordination", "level": 88 }
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "role": "Freelance AI Software Engineer",
+      "company": "Independent",
+      "period": "Current",
+      "summary": "Build practical software independently, taking projects from an initial idea through implementation and iteration.",
+      "highlights": [
+        "Build web, mobile, and AI-assisted software projects.",
+        "Keep technical work organised and well documented.",
+        "Manage project scope, priorities, and delivery independently."
+      ]
+    },
+    {
+      "role": "Software Engineering Student",
+      "company": "Bournemouth University",
+      "period": "Current",
+      "summary": "Studying software engineering while applying course concepts through practical portfolio projects.",
+      "highlights": [
+        "Develop software engineering knowledge through academic study.",
+        "Build practical projects across frontend, backend, mobile, and AI workflows.",
+        "Strengthen problem-solving, documentation, and collaboration skills."
+      ]
+    },
+    {
+      "role": "Front-End Software Engineer & Maintainer",
+      "company": "QuackHost",
+      "period": "2021",
+      "summary": "Co-owned and maintained a server-hosting company with a business partner.",
+      "highlights": [
+        "Built and maintained customer-facing frontend interfaces.",
+        "Handled ongoing website maintenance and frontend updates.",
+        "Shared responsibility for operating and maintaining the hosting service."
+      ]
+    }
+  ],
   "certificates": []
 }
