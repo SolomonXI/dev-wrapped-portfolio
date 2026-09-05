@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Backstage — Dev Wrapped Studio</title>
+    <link rel="icon" href="/assets/favicon.svg" />
+    <link rel="stylesheet" href="/assets/admin.css" />
+  </head>
+  <body>
+    <a class="skip" href="#editor">Skip to editor</a>
+    <aside class="studio-sidebar">
+      <a class="studio-brand" href="/" aria-label="Back to portfolio"
+        ><span class="brand-signal">▥</span
+        ><span>Dev Wrapped<small>THE CREATOR STUDIO</small></span></a
+      >
+      <div class="sidebar-caption">YOUR PORTFOLIO, REMIXED</div>
+      <nav id="studio-nav" aria-label="Editor sections"></nav>
+      <div class="sidebar-end">
+        <div class="session-pill"><i></i> Private owner session</div>
+        <a class="side-action" href="/" target="_blank" rel="noopener"
+          >View public portfolio ↗</a
+        ><button class="side-action" id="logout">Sign out</button>
+      </div>
+    </aside>
+    <div class="studio-main">
+      <header class="studio-topbar">
+        <div>
+          <span class="breadcrumb">Backstage / </span
+          ><strong id="current-section">Overview</strong>
+        </div>
+        <div class="top-actions">
+          <span id="save-indicator">Loading…</span
+          ><button
+            class="button"
+            id="undo"
+            disabled
+            aria-label="Undo last change"
+          >
+            ↶</button
+          ><button
+            class="button"
+            id="redo"
+            disabled
+            aria-label="Redo last change"
+          >
+            ↷</button
+          ><button class="button primary" id="publish" disabled>
+            Publish changes ↗
+          </button>
+        </div>
+      </header>
+      <main>
+        <header class="studio-heading">
+          <div>
+            <div class="eyebrow">LESS ADMIN. MORE YOU.</div>
+            <h1>Your next great edit.</h1>
+            <p>Make a change. See it live. Release it when it feels right.</p>
+          </div>
+          <span class="edition-badge">STUDIO<br /><b>VOL. 01</b></span>
+        </header>
+        <div id="status" class="status" role="status">
+          Loading your portfolio…
+        </div>
+        <div id="draft-banner" class="draft-banner" hidden>
+          <span>You have an unpublished draft on this device.</span
+          ><button class="button" id="restore-draft">Restore draft</button
+          ><button class="button" id="dismiss-draft">Discard draft</button>
+        </div>
+        <div class="workspace">
+          <section class="edit-column">
+            <form id="editor" autocomplete="off"></form>
+          </section>
+          <aside class="preview-column">
+            <div class="preview-header">
+              <div>
+                <div class="eyebrow">THE LISTENING ROOM</div>
+                <h2>Live preview<span class="preview-dot"></span></h2>
+              </div>
+              <a
+                href="/"
+                target="_blank"
+                rel="noopener"
+                aria-label="Open public portfolio"
+                >↗</a
+              >
+            </div>
+            <div class="preview-controls">
+              <label
+                >Page<select id="preview-page">
+                  <option value="/">Overview</option>
+                  <option value="/featured_projects_wrapped_visual/">
+                    Projects
+                  </option>
+                  <option value="/skills_wrapped/">Skills</option>
+                  <option value="/experience_wrapped/">Experience</option>
+                  <option value="/certificates_wrapped/">Credentials</option>
+                  <option value="/contact_me/">Contact</option>
+                </select></label
+              >
+              <div class="device-switch" role="group" aria-label="Preview size">
+                <button type="button" data-device="desktop" aria-pressed="true">
+                  Desktop</button
+                ><button
+                  type="button"
+                  data-device="mobile"
+                  aria-pressed="false"
+                >
+                  Mobile
+                </button>
+              </div>
+            </div>
+            <div class="preview-frame-wrap">
+              <iframe
+                id="preview-frame"
+                title="Portfolio live preview"
+                src="about:blank"
+              ></iframe>
+            </div>
+            <p class="preview-note">
+              Only you can see these edits.
+              <strong>Publish changes</strong> updates the public site.
+            </p>
+          </aside>
+        </div>
+        <footer class="studio-footer">
+          YOUR STORY. YOUR RULES.
+          <span>No code. No GitHub tokens. Just you.</span>
+        </footer>
+      </main>
+    </div>
+    <dialog id="media-dialog" aria-labelledby="media-title">
+      <div class="dialog-heading">
+        <div>
+          <div class="eyebrow">THE ARTWORK COLLECTION</div>
+          <h2 id="media-title">Pick your cover.</h2>
+        </div>
+        <button
+          class="button"
+          data-close-media
+          aria-label="Close image library"
+        >
+          ✕
+        </button>
+      </div>
+      <p>
+        Choose existing artwork or upload your own. Uploaded images are publicly
+        viewable when linked.
+      </p>
+      <label class="button primary upload-label"
+        >Upload an image<input
+          id="upload-image"
+          type="file"
+          accept="image/png,image/jpeg,image/webp,image/gif"
+      /></label>
+      <p class="help">
+        PNG, JPG, WebP or GIF · up to 3 MB. For a skill SVG, use its hosted URL.
+      </p>
+      <p id="media-status" role="status"></p>
+      <div id="media-grid" class="media-grid"></div>
+    </dialog>
+    <script type="module" src="/assets/admin.js"></script>
+  </body>
+</html>

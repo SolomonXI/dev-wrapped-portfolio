@@ -84,8 +84,23 @@
         throw new Error("The portfolio could not be loaded. Please try again.");
       data = await response.json();
     }
+    const { normalize, sectionDefaults } = await import("/assets/settings.js");
+    normalize(data);
+    const design = data.design;
+    const copy = design.copy;
+    for (const [key, value] of Object.entries(design.theme)) {
+      if (
+        ["bg", "panel", "text", "muted", "green", "purple", "pink"].includes(
+          key,
+        ) &&
+        /^#[0-9a-f]{6}$/i.test(value)
+      )
+        document.documentElement.style.setProperty(`--${key}`, value);
+    }
     const p = data.profile || {};
-    const projects = (data.projects || []).filter((x) => x && x.title);
+    const projects = (data.projects || []).filter(
+      (x) => x && x.title && !x.hidden,
+    );
     const groups = (data.skills || []).filter(Boolean);
     const skills = groups.flatMap((g) =>
       (g.items || []).map((s) => ({ ...s, category: g.category })),
@@ -94,8 +109,10 @@
       /tech|develop|engineering/i.test(s.category || ""),
     );
     const topSkills = technical.length ? technical : skills;
-    const experience = (data.experience || []).filter(Boolean);
-    const certificates = (data.certificates || []).filter(Boolean);
+    const experience = (data.experience || []).filter((x) => x && !x.hidden);
+    const certificates = (data.certificates || []).filter(
+      (x) => x && !x.hidden,
+    );
     const socials = (data.socials || []).filter((s) => s.label && url(s.url));
     const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email || "")
       ? p.email
@@ -160,12 +177,12 @@
         .trim()
         .split(/\s+/);
       const last = words.pop().replace(/[.!?]+$/, "");
-      return `<section class="hero" aria-label="Introduction"><div class="hero-copy"><div class="eyebrow"><span class="live-dot"></span> ${esc(data.kicker || "A developer portfolio, wrapped")}</div><h1>${esc(words.join(" "))}<br><em>${esc(last)}.</em></h1><p>${esc(data.intro || p.bio)}</p><div class="hero-actions"><button class="btn dark" data-story>${icon("play")} Play my story</button><a class="text-link" href="#selected-work">Explore the projects ↗</a></div><div class="hero-footer">${avatar}<span>${esc(p.name)} · ${esc(p.location)}</span></div></div><div class="record-scene" aria-hidden="true"><span class="art-caption">INDEPENDENTLY BUILT. ALWAYS EVOLVING.</span><div class="record"><div class="record-label"><span>THE DEVELOPER EDITION</span><b>DEV<br>WRAPPED</b><span>${year} · VOL. 01</span></div></div>${topSkills[0] ? `<div class="orbit-card one">${image(topSkills[0].icon, "")}<div><small>In the rotation</small><b>${esc(topSkills[0].name)}</b></div></div>` : ""}<div class="orbit-card two">${icon("sound")}<div><small>A growing collection</small><b>${projects.length} projects. One story.</b></div></div><span class="spark">✳</span></div></section>`;
+      return `<section class="hero" aria-label="Introduction"><div class="hero-copy"><div class="eyebrow"><span class="live-dot"></span> ${esc(data.kicker || "A developer portfolio, wrapped")}</div><h1>${esc(words.join(" "))}<br><em>${esc(last)}.</em></h1><p>${esc(data.intro || p.bio)}</p><div class="hero-actions"><button class="btn dark" data-story>${icon("play")} ${esc(copy.heroButton)}</button><a class="text-link" href="${design.hiddenSections.includes("projects") ? route("projects") : "#selected-work"}">Explore the projects ↗</a></div><div class="hero-footer">${avatar}<span>${esc(p.name)} · ${esc(p.location)}</span></div></div><div class="record-scene" aria-hidden="true"><span class="art-caption">${esc(copy.artCaption)}</span><div class="record"><div class="record-label"><span>${esc(copy.edition)}</span><b>${esc(data.siteName || "Dev Wrapped")}</b><span>${year} · VOL. 01</span></div></div>${topSkills[0] ? `<div class="orbit-card one">${image(topSkills[0].icon, "")}<div><small>In the rotation</small><b>${esc(topSkills[0].name)}</b></div></div>` : ""}<div class="orbit-card two">${icon("sound")}<div><small>A growing collection</small><b>${projects.length} projects. One story.</b></div></div><span class="spark">✳</span></div></section>`;
     };
     const stats = () =>
       `<section class="stats-strip" aria-label="Portfolio at a glance">${(data
         .stats?.length
-        ? data.stats.slice(0, 3)
+        ? data.stats
         : [
             { value: projects.length, label: "Projects in the collection" },
             {
@@ -186,9 +203,9 @@
         : [
             ...projects.filter((x) => x.featured),
             ...projects.filter((x) => !x.featured),
-          ].slice(0, 3);
+          ].slice(0, design.featuredLimit);
       const categories = [...new Set(projects.flatMap((x) => x.tags || []))];
-      return `<section class="section" id="selected-work">${heading("01 / THE PROJECT PLAYLIST", full ? "The full collection." : "Worth a closer look.", full ? "Different problems. Thoughtful software." : "A few favourites from the things I’ve been building.", !full ? viewLink("projects", "All projects") : "")}${full && categories.length ? `<div class="filters" role="group" aria-label="Filter projects">${["All", ...categories].map((t, i) => `<button class="filter" data-filter="${esc(t)}" aria-pressed="${i === 0}">${esc(t)}</button>`).join("")}</div><p id="filter-status" class="sr-only" role="status"></p>` : ""}<div class="projects-grid">${chosen.length ? chosen.map(projectCard).join("") : empty("The next project is taking shape. Check back soon.")}</div></section>`;
+      return `<section class="section" id="selected-work">${heading("01 / THE PROJECT PLAYLIST", full ? copy.projectFullTitle : copy.projectTitle, full ? copy.projectFullIntro : copy.projectIntro, !full ? viewLink("projects", "All projects") : "")}${full && categories.length ? `<div class="filters" role="group" aria-label="Filter projects">${["All", ...categories].map((t, i) => `<button class="filter" data-filter="${esc(t)}" aria-pressed="${i === 0}">${esc(t)}</button>`).join("")}</div><p id="filter-status" class="sr-only" role="status"></p>` : ""}<div class="projects-grid">${chosen.length ? chosen.map(projectCard).join("") : empty("The next project is taking shape. Check back soon.")}</div></section>`;
     };
     const stackRows = () =>
       topSkills
@@ -199,62 +216,75 @@
         )
         .join("");
     const about = () =>
-      `<section class="about-grid" aria-label="About and toolkit"><article class="about-card"><div class="eyebrow">02 / THE PERSON BEHIND THE PROJECTS</div><h2>Curious by default.<br>Builder by choice.</h2><p>${esc(p.bio || data.intro)}</p><div class="profile-line">${avatar}<div><strong>${esc(p.name)}</strong><span>${esc(p.role)}</span></div></div></article><article class="stack-card">${heading("MY HEAVY ROTATION", "The everyday toolkit.", "", viewLink("skills", "Full stack"))}${stackRows() || empty("The toolkit is being updated.")}</article></section>`;
+      `<section class="about-grid" aria-label="About and toolkit"><article class="about-card"><div class="eyebrow">02 / THE PERSON BEHIND THE PROJECTS</div><h2>${esc(copy.aboutTitle)}</h2><p>${esc(p.bio || data.intro)}</p><div class="profile-line">${avatar}<div><strong>${esc(p.name)}</strong><span>${esc(p.role)}</span></div></div></article><article class="stack-card">${heading("MY HEAVY ROTATION", copy.toolkitTitle, "", viewLink("skills", "Full stack"))}${stackRows() || empty("The toolkit is being updated.")}</article></section>`;
     const skillSection = () =>
-      `<section class="section">${heading("02 / BUILT WITH", "Tools, not just buzzwords.", "The technical and human skills I bring to a project.")}<div class="skills-categories">${groups.map((g) => `<article class="skills-category"><h3>${esc(g.category)}</h3>${(g.items || []).map((s) => `<div class="tech-row">${skillIcon(s)}<strong>${esc(s.name)}</strong><span class="level">${Math.min(100, Math.max(0, Number(s.level) || 0))}%</span></div>`).join("")}</article>`).join("") || empty("Skills are being updated.")}</div><p class="fine-print">Levels are self-assessed confidence, not external certifications or measured usage.</p></section>`;
+      `<section class="section">${heading("02 / BUILT WITH", copy.skillsTitle, copy.skillsIntro)}<div class="skills-categories">${groups.map((g) => `<article class="skills-category"><h3>${esc(g.category)}</h3>${(g.items || []).map((s) => `<div class="tech-row">${skillIcon(s)}<strong>${esc(s.name)}</strong><span class="level">${Math.min(100, Math.max(0, Number(s.level) || 0))}%</span></div>`).join("")}</article>`).join("") || empty("Skills are being updated.")}</div><p class="fine-print">Levels are self-assessed confidence, not external certifications or measured usage.</p></section>`;
     const journey = (full = false) =>
-      `<section class="section" id="journey">${heading("03 / THE CAREER TRACKLIST", "Every chapter counts.", "The work, the learning, and the people along the way.", !full ? viewLink("experience", "My journey") : "")}<div class="experience-list">${experience.map((e, i) => `<details class="experience-item" ${full && i === 0 ? "open" : ""}><summary>${url(e.image) ? image(e.image, `${e.company} visual`) : `<span class="tech-icon">${icon("experience")}</span>`}<div><h3>${esc(e.role)}</h3><p class="company">${esc(e.company)}</p></div><span class="period">${esc(e.period)}</span><span class="expand" aria-hidden="true">+</span></summary><div class="experience-body"><p>${esc(e.summary)}</p><ul>${(e.highlights || []).map((h) => `<li>${esc(h)}</li>`).join("")}</ul></div></details>`).join("") || empty("The next chapter starts here.")}</div></section>`;
+      `<section class="section" id="journey">${heading("03 / THE CAREER TRACKLIST", copy.journeyTitle, copy.journeyIntro, !full ? viewLink("experience", "My journey") : "")}<div class="experience-list">${experience.map((e, i) => `<details class="experience-item" ${full && i === 0 ? "open" : ""}><summary>${url(e.image) ? image(e.image, `${e.company} visual`) : `<span class="tech-icon">${icon("experience")}</span>`}<div><h3>${esc(e.role)}</h3><p class="company">${esc(e.company)}</p></div><span class="period">${esc(e.period)}</span><span class="expand" aria-hidden="true">+</span></summary><div class="experience-body"><p>${esc(e.summary)}</p><ul>${(e.highlights || []).map((h) => `<li>${esc(h)}</li>`).join("")}</ul></div></details>`).join("") || empty("The next chapter starts here.")}</div></section>`;
     const credentials = () =>
-      `<section class="section">${heading("04 / KEEP LEARNING", "A work in progress.", "Learning does not stop at the end of a project.")}<div class="cert-grid">${certificates.map((c) => `<article class="cert">${icon("certificates")}<h3>${esc(c.title)}</h3><p>${esc(c.issuer)} · ${esc(c.date)}</p>${url(c.url) ? `<a href="${esc(url(c.url))}" target="_blank" rel="noopener noreferrer">View credential ↗</a>` : ""}</article>`).join("") || empty("No certifications listed yet. In the meantime, the projects show what I’m putting into practice.")}</div></section>`;
+      `<section class="section">${heading("04 / KEEP LEARNING", copy.credentialsTitle, copy.credentialsIntro)}<div class="cert-grid">${certificates.map((c) => `<article class="cert">${image(c.image, `${c.title} credential`)}${icon("certificates")}<h3>${esc(c.title)}</h3><p>${esc(c.issuer)} · ${esc(c.date)}</p>${url(c.url) ? `<a href="${esc(url(c.url))}" target="_blank" rel="noopener noreferrer">View credential ↗</a>` : ""}</article>`).join("") || empty("No certifications listed yet. In the meantime, the projects show what I’m putting into practice.")}</div></section>`;
     const contact = () =>
-      `<section class="contact-banner" id="contact"><div><div class="eyebrow">NEXT UP / LET’S BUILD SOMETHING</div><h2>A good idea needs<br>a good collaborator.</h2><p>${esc(data.contactText)}</p></div><div class="contact-actions">${email ? `<a href="${contactHref}" class="btn dark">Start a conversation ${icon("external")}</a><button class="copy-email" type="button" data-copy-email>${icon("copy")} ${esc(email)}</button>` : socials.length ? `<a href="${esc(url(socials[0].url))}" class="btn dark" target="_blank" rel="noopener noreferrer">Connect with me ${icon("external")}</a>` : "<small>Contact details coming soon.</small>"}</div></section>`;
+      `<section class="contact-banner" id="contact"><div><div class="eyebrow">NEXT UP / LET’S BUILD SOMETHING</div><h2>${esc(copy.contactTitle)}</h2><p>${esc(data.contactText)}</p></div><div class="contact-actions">${email ? `<a href="${contactHref}" class="btn dark">Start a conversation ${icon("external")}</a><button class="copy-email" type="button" data-copy-email>${icon("copy")} ${esc(email)}</button>` : socials.length ? `<a href="${esc(url(socials[0].url))}" class="btn dark" target="_blank" rel="noopener noreferrer">Connect with me ${icon("external")}</a>` : "<small>Contact details coming soon.</small>"}</div></section>`;
     const routeHeader = (label, title, copy) =>
       `<header class="route-header"><div class="eyebrow">${esc(label)}</div><h1>${esc(title)}</h1><p>${esc(copy)}</p></header>`;
     const pages = {
       home: () =>
-        hero() + stats() + projectSection() + about() + journey() + contact(),
+        [...new Set([...design.sectionOrder, ...sectionDefaults])]
+          .filter((key) => !design.hiddenSections.includes(key))
+          .map(
+            (key) =>
+              ({
+                hero,
+                stats,
+                projects: projectSection,
+                about,
+                experience: journey,
+                contact,
+              })[key]?.() || "",
+          )
+          .join(""),
       projects: () =>
         routeHeader(
           "THE DEVELOPER DISCOGRAPHY",
-          "Less talk. More things built.",
-          "A collection of practical products, creative experiments, and problems worth solving.",
+          copy.projectsPageTitle,
+          copy.projectsPageIntro,
         ) +
         projectSection(true) +
         contact(),
       skills: () =>
         routeHeader(
           "IN HEAVY ROTATION",
-          "The stack behind the story.",
-          "Good software takes the right tools, curiosity, and a little persistence.",
+          copy.skillsPageTitle,
+          copy.skillsPageIntro,
         ) +
         skillSection() +
         contact(),
       experience: () =>
         routeHeader(
           "THE LONG PLAY",
-          "Not an overnight story.",
-          "From co-owning a hosting company to studying software engineering. Every chapter adds something.",
+          copy.experiencePageTitle,
+          copy.experiencePageIntro,
         ) +
         journey(true) +
         contact(),
       certificates: () =>
         routeHeader(
           "ALWAYS A STUDENT",
-          "Stay curious. Keep going.",
-          "A space for qualifications and milestones along the way.",
+          copy.certificatesPageTitle,
+          copy.certificatesPageIntro,
         ) +
         credentials() +
         contact(),
       contact: () =>
         routeHeader(
           "LET’S MAKE SOMETHING",
-          "Your next collaborator?",
-          "A project, a placement, or a conversation about an idea. I’d love to hear from you.",
+          copy.contactPageTitle,
+          copy.contactPageIntro,
         ) +
         contact() +
         `<div class="contact-profile">${avatar}<div><h2>${esc(p.name)}</h2><p>${esc(p.role)} · ${esc(p.location)}</p><div class="social-nav">${socialLinks}</div></div></div>`,
     };
-    app.innerHTML = `<a class="skip" href="#main">Skip to content</a><aside class="sidebar" id="portfolio-nav" aria-label="Portfolio navigation"><a class="brand" href="${route("home")}"><span class="brand-mark">${icon("sound")}</span><span>${esc(data.siteName || "Dev Wrapped")}<small>THE DEVELOPER EDITION</small></span></a><div class="nav-label">Your next discovery</div><nav class="side-nav">${Object.keys(
+    app.innerHTML = `<a class="skip" href="#main">Skip to content</a><aside class="sidebar" id="portfolio-nav" aria-label="Portfolio navigation"><a class="brand" href="${route("home")}"><span class="brand-mark">${icon("sound")}</span><span>${esc(data.siteName || "Dev Wrapped")}<small>${esc(copy.edition)}</small></span></a><div class="nav-label">Your next discovery</div><nav class="side-nav">${Object.keys(
       paths,
     )
       .map(
@@ -263,7 +293,9 @@
       )
       .join(
         "",
-      )}</nav><div class="sidebar-bottom"><div class="mini-profile">${avatar}<div><strong>${esc(firstName)}</strong><span>${esc(p.location)}</span></div></div><div class="social-nav">${socialLinks}</div><p class="edition">INDEPENDENT PORTFOLIO / ${year}</p></div></aside><div class="page-wrap"><header class="topbar"><div class="breadcrumb"><button class="mobile-toggle" aria-label="Open navigation" aria-controls="portfolio-nav" aria-expanded="false">${icon("menu")}</button><span>Portfolio</span><span>/</span><b>${navLabels[page] || "Overview"}</b></div><a class="top-contact" href="${contactHref}">${icon("contact")} Let’s talk ${icon("external")}</a></header><main id="main" class="main">${(pages[page] || pages.home)()}<footer class="footer"><span>© ${year} ${esc(p.name || data.siteName)}. A portfolio, on repeat.</span><span><button class="footer-share" data-share>Share this portfolio ↗</button> · <a href="/admin/">Studio</a></span></footer></main></div><dialog class="dialog" id="project-dialog" aria-labelledby="project-dialog-title"></dialog><dialog class="dialog story-dialog" id="story-dialog" aria-labelledby="story-title"></dialog><div class="toast" role="status" hidden></div>`;
+      )}</nav><div class="sidebar-bottom"><div class="mini-profile">${avatar}<div><strong>${esc(firstName)}</strong><span>${esc(p.location)}</span></div></div><div class="social-nav">${socialLinks}</div><p class="edition">INDEPENDENT PORTFOLIO / ${year}</p><button class="owner-entry" data-owner type="button">${icon("skills")} Owner sign in <span aria-hidden="true">↗</span></button></div></aside><div class="page-wrap"><header class="topbar"><div class="breadcrumb"><button class="mobile-toggle" aria-label="Open navigation" aria-controls="portfolio-nav" aria-expanded="false">${icon("menu")}</button><span>Portfolio</span><span>/</span><b>${navLabels[page] || "Overview"}</b></div><a class="top-contact" href="${contactHref}">${icon("contact")} Let’s talk ${icon("external")}</a></header><main id="main" class="main">${(pages[page] || pages.home)()}<footer class="footer"><span>© ${year} ${esc(p.name || data.siteName)}. A portfolio, on repeat.</span><span><button class="footer-share" data-share>Share this portfolio ↗</button> · <button class="footer-share" data-owner type="button">Owner sign in</button></span></footer></main></div><dialog class="dialog" id="project-dialog" aria-labelledby="project-dialog-title"></dialog><dialog class="dialog story-dialog" id="story-dialog" aria-labelledby="story-title"></dialog><div class="toast" role="status" hidden></div>`;
+    const { mountOwner } = await import("/assets/owner.js");
+    mountOwner();
     const toggle = document.querySelector(".mobile-toggle");
     const sidebar = document.querySelector(".sidebar");
     const smallScreen = matchMedia("(max-width: 640px)");

@@ -11,6 +11,9 @@
   },
   "scripts": {
     "test": "node --test tests/portfolio.test.mjs",
-    "check": "node --check assets/wrapped.js && node --check assets/admin.js"
+    "check": "node --check assets/wrapped.js && node --check assets/admin.js && node --check assets/owner.js && node --check api/studio.js && node --check api/media.js",
+    "build": "node scripts/build.mjs",
+    "pretest": "npm run build",
+    "test:live": "node scripts/smoke.mjs"
   }
 }

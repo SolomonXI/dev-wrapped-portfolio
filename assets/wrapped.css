@@ -1666,3 +1666,62 @@ svg.icon {
     font-size: 20px;
   }
 }
+/* Owner entry is a sign-in action, never a public editor link. */
+.owner-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 9px 12px;
+  width: 100%;
+  margin-top: 16px;
+  color: var(--muted);
+  text-align: left;
+  font-size: 12px;
+}
+.owner-entry:hover {
+  color: var(--green);
+  border-color: var(--green);
+}
+.owner-dialog {
+  padding: 40px;
+  max-width: 460px;
+}
+.owner-dialog h2 {
+  margin: 20px 0;
+  font-size: 44px;
+}
+.owner-dialog p {
+  color: var(--muted);
+  margin: 16px 0;
+}
+.owner-dialog label {
+  display: block;
+  margin-top: 24px;
+}
+.owner-dialog input {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin: 8px 0 18px;
+}
+.owner-dialog .btn {
+  width: 100%;
+  justify-content: center;
+}
+.cert img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+.stats-strip {
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+}

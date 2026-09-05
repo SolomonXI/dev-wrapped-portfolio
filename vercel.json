@@ -1,49 +1,88 @@
 {
-  "redirects": [
+  "buildCommand": "npm run build",
+  "outputDirectory": "public",
+  "routes": [
     {
-      "source": "/admin_dashboard_updated/:path*",
-      "destination": "/admin/",
-      "permanent": true
+      "src": "^/admin(?:/.*)?$",
+      "dest": "/api/studio"
     },
     {
-      "source": "/admin_login_mfa/:path*",
-      "destination": "/admin/",
-      "permanent": true
+      "src": "^/lib(?:/.*)?$",
+      "dest": "/api/not-found"
     },
     {
-      "source": "/admin_manage_certificates/:path*",
-      "destination": "/admin/",
-      "permanent": true
+      "src": "^/admin_dashboard_updated(?:/.*)?$",
+      "headers": {
+        "Location": "/admin/"
+      },
+      "status": 307
     },
     {
-      "source": "/admin_manage_experience/:path*",
-      "destination": "/admin/",
-      "permanent": true
+      "src": "^/admin_login_mfa(?:/.*)?$",
+      "headers": {
+        "Location": "/admin/"
+      },
+      "status": 307
     },
     {
-      "source": "/admin_manage_projects/:path*",
-      "destination": "/admin/",
-      "permanent": true
+      "src": "^/admin_manage_certificates(?:/.*)?$",
+      "headers": {
+        "Location": "/admin/"
+      },
+      "status": 307
     },
     {
-      "source": "/admin_manage_skills/:path*",
-      "destination": "/admin/",
-      "permanent": true
+      "src": "^/admin_manage_experience(?:/.*)?$",
+      "headers": {
+        "Location": "/admin/"
+      },
+      "status": 307
     },
     {
-      "source": "/your_dev_wrapped_dashboard_with_shader/:path*",
-      "destination": "/",
-      "permanent": true
+      "src": "^/admin_manage_projects(?:/.*)?$",
+      "headers": {
+        "Location": "/admin/"
+      },
+      "status": 307
     },
     {
-      "source": "/dev_wrapped/:path*",
-      "destination": "/",
-      "permanent": true
+      "src": "^/admin_manage_skills(?:/.*)?$",
+      "headers": {
+        "Location": "/admin/"
+      },
+      "status": 307
     },
     {
-      "source": "/nova_dashboard_details/:path*",
-      "destination": "/featured_projects_wrapped_visual/",
-      "permanent": true
+      "src": "^/your_dev_wrapped_dashboard_with_shader(?:/.*)?$",
+      "headers": {
+        "Location": "/"
+      },
+      "status": 308
+    },
+    {
+      "src": "^/dev_wrapped(?:/.*)?$",
+      "headers": {
+        "Location": "/"
+      },
+      "status": 308
+    },
+    {
+      "src": "^/nova_dashboard_details(?:/.*)?$",
+      "headers": {
+        "Location": "/featured_projects_wrapped_visual/"
+      },
+      "status": 308
+    },
+    {
+      "handle": "filesystem"
     }
-  ]
+  ],
+  "functions": {
+    "api/studio.js": {
+      "includeFiles": "lib/studio.html"
+    },
+    "api/content.js": {
+      "includeFiles": "data/site.json"
+    }
+  }
 }

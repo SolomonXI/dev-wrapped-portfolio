@@ -18,13 +18,26 @@ Existing public paths remain supported:
 `/`, `/featured_projects_wrapped_visual/`, `/skills_wrapped/`,
 `/experience_wrapped/`, `/certificates_wrapped/`, `/contact_me/`.
 
-## Editing
+## Editing — your private creator studio
 
-Open `/admin/`. Your password and existing signed session continue to work.
+Click **Owner sign in** in the portfolio sidebar (or footer), enter your existing admin password, and the Studio opens. No URL editing or GitHub token is needed. A remembered owner session opens the Studio immediately.
 
-Edit your profile, homepage headline/introduction, statistics, projects, skill icons, experience images, certificates, and social links. Choose any page in the live preview selector. Typing changes only the preview; **Save changes** publishes to the private Blob store.
+- Wrapped-inspired charcoal, lime, lavender and pink workspace with focused section navigation.
+- Edit profile, contact, links, homepage copy/stats, projects, grouped skills, experience, and credentials.
+- Upload PNG/JPEG/WebP/GIF artwork up to 3 MB, select existing local logos/covers, or paste image URLs. Uploaded artwork is public when its media URL is known; do not upload confidential files.
+- Reorder collections and individual skills; feature or hide projects; hide experiences/credentials.
+- Edit main headings and page introductions; customise seven colour tokens, homepage section order/visibility, and featured-project count. Fixed navigation labels, recap wording and layout details remain design code.
+- Live previews of all six public pages at desktop and phone widths. Draft edits only affect the preview.
+- Automatic browser drafts, explicit recovery/discard, undo/redo, JSON backup import/export, unsaved-change warnings, and publish feedback.
+- **Publish changes** saves to private Vercel Blob. Deployment never overwrites portfolio content.
 
-Browser drafts and JSON import/export are retained. The editor previews scale to the available width. Imported/browser drafts must be reviewed before publishing. Editorial section headings, colour tokens, and layout are design code; personal content comes from the editor.
+### Access protection
+
+`/admin`, `/admin/`, `/admin/index.html` and `/api/studio` run the same server-side session check. Signed-out requests redirect to the public homepage without receiving editor HTML. Direct URLs remain usable by an already authenticated owner; URL obscurity is not the security boundary. The old exported admin URLs lead through the same protected entry.
+
+The editor template lives in `lib/studio.html`, bundled only for the function. The static build uses a public-file allowlist, and `/lib/*` is also denied by routing. Explicit routes run before filesystem matching so trailing-slash and legacy paths cannot bypass the gate. HTML responses are private/no-store, disallow framing, and use a CSP. Saving and uploads separately require a signed HttpOnly/Secure/SameSite session and enforce same-origin checks. Logout clears the browser cookie. Password sign-in has basic per-instance throttling; configure Vercel Firewall for distributed brute-force protection. Cookies are stateless, so signing out does not revoke a previously stolen cookie; rotate `SESSION_SECRET` if compromise is suspected.
+
+Drafts are local to the browser, not cross-device cloud drafts, and remain after logout for recovery. On shared devices, discard or download drafts before leaving. Uploaded unused media is not automatically deleted. This is a single-owner editor: coordinate edits across devices to avoid last-write-wins overwrites.
 
 ## Data and architecture
 
@@ -33,7 +46,7 @@ Browser drafts and JSON import/export are retained. The editor previews scale to
 - `api/content.js`: public reads and authenticated writes.
 - `api/admin-auth.js` / `lib/auth.js`: password verification and signed HttpOnly, Secure, SameSite cookies.
 - `assets/wrapped.js` / `assets/wrapped.css`: shared public renderer and design system.
-- `admin/index.html`, `assets/admin.js`, `assets/admin.css`: the studio.
+- `api/studio.js`, `lib/studio.html`, `assets/admin.js`, `assets/admin.css`: the studio.
 - `assets/images`: local project, experience, and technology assets.
 - Older exported Stitch files are retained in Git for reference. Legacy dashboard, project-detail, and admin URLs redirect to the redesigned public pages or working studio.
 - `api/contact.js` is an unused legacy integration; the redesigned contact page uses honest mail links.
@@ -44,7 +57,7 @@ Required Vercel environment variables: `BLOB_READ_WRITE_TOKEN`, `ADMIN_PASSWORD`
 
 Install dependencies with `npm ci`. Run `npm run check` for JavaScript syntax validation.
 
-For browser tests, install Chromium with `npx playwright install chromium`, then run `npm test`. Tests use a loopback-only static server and in-memory mocked content/auth endpoints. They never write production content. Tests cover routes, small screens, project filters/dialogs, recap navigation, technology images, experience expansion, admin preview/save integration, escaping, empty/error states, and signed-session validation.
+For browser tests, install Chromium with `npx playwright install chromium`, then run `npm test`. Tests use a loopback-only server with the real studio/auth handlers and in-memory mocked content persistence. Production is never written during tests. They never write production content. Tests cover routes, small screens, project filters/dialogs, recap navigation, technology images, experience expansion, admin preview/save integration, escaping, empty/error states, and signed-session validation.
 
 For Vercel-backed local development use `vercel dev` from this project after linking it to the correct Vercel project. Use a development Blob store if testing writes; production content must not be used for destructive tests.
 
