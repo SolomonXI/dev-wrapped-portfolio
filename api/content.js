@@ -40,7 +40,7 @@ export default async function handler(req, res) {
 
   if (req.method !== "PUT")
     return res.status(405).json({ error: "Method not allowed" });
-  if (!isAuthenticated(req))
+  if (!(await isAuthenticated(req)))
     return res.status(401).json({ error: "Please sign in again" });
   if (!isSameOrigin(req))
     return res.status(403).json({ error: "Invalid request origin" });

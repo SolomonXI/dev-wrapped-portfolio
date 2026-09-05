@@ -1,4 +1,6 @@
-import { test, before, after } from "node:test";
+import { mfaStore } from "../lib/mfa-store.js";
+import { authenticator } from "../lib/totp.js";
+import { test, before, after, mock } from "node:test";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
@@ -19,11 +21,40 @@ import {
 
 process.env.SESSION_SECRET = "test-only-not-a-production-secret";
 process.env.ADMIN_PASSWORD = "test-only-password";
+process.env.MFA_ENCRYPTION_KEY =
+  "test-only-encryption-key-at-least-32-characters";
+const mfaSecret = "JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP";
+let securityRecord = {
+  enabled: true,
+  version: "test-version",
+  secret: mfaSecret,
+  lastStep: -1,
+  recovery: [],
+  used: [],
+  failures: 0,
+  lockedUntil: 0,
+};
+let securityEtag = 1;
+mock.method(mfaStore, "read", async () => ({
+  record: structuredClone(securityRecord),
+  etag: String(securityEtag),
+}));
+mock.method(mfaStore, "write", async (record, etag) => {
+  if (etag !== String(securityEtag)) {
+    const error = new Error("Conflict");
+    error.name = "BlobPreconditionFailedError";
+    throw error;
+  }
+  securityRecord = structuredClone(record);
+  securityEtag++;
+});
 const root = fileURLToPath(new URL("../", import.meta.url));
 const fixture = JSON.parse(
   await readFile(resolve(root, "data/site.json"), "utf8"),
 );
-const routing = JSON.parse(await readFile(resolve(root,"vercel.json"),"utf8")).routes;
+const routing = JSON.parse(
+  await readFile(resolve(root, "vercel.json"), "utf8"),
+).routes;
 const types = {
   ".html": "text/html",
   ".js": "text/javascript",
@@ -39,10 +70,13 @@ before(async () => {
       let pathname = decodeURIComponent(
         new URL(req.url, "http://localhost").pathname,
       );
-      for(const rule of routing) {
+      for (const rule of routing) {
         if (!rule.src || !new RegExp(rule.src).test(pathname)) continue;
-        if(rule.headers?.Location) {res.writeHead(rule.status,rule.headers).end();return;}
-        if(rule.dest) pathname=rule.dest;
+        if (rule.headers?.Location) {
+          res.writeHead(rule.status, rule.headers).end();
+          return;
+        }
+        if (rule.dest) pathname = rule.dest;
         break;
       }
       const routes = {
@@ -103,7 +137,7 @@ async function setup(t, { content = fixture, width = 1440 } = {}) {
   await context.addCookies([
     {
       name: "__Host-devwrapped_admin",
-      value: createSessionCookie().split(";")[0].split("=")[1],
+      value: createSessionCookie("test-version").split(";")[0].split("=")[1],
       url: base.replace("http:", "https:") + "/",
       secure: true,
       httpOnly: true,
@@ -371,17 +405,17 @@ test("failed content request has a usable recovery screen", async (t) => {
   await page.getByRole("button", { name: "Reload portfolio" }).waitFor();
 });
 
-test("signed admin sessions reject tampering and cross-origin saves", () => {
+test("signed admin sessions reject tampering and cross-origin saves", async () => {
   const before = process.env.SESSION_SECRET;
   process.env.SESSION_SECRET = "test-only-not-a-production-secret";
   try {
-    const cookie = createSessionCookie().split(";")[0];
-    assert.equal(isAuthenticated({ headers: { cookie } }), true);
+    const cookie = createSessionCookie("test-version").split(";")[0];
+    assert.equal(await isAuthenticated({ headers: { cookie } }), true);
     assert.equal(
-      isAuthenticated({ headers: { cookie: cookie + "bad" } }),
+      await isAuthenticated({ headers: { cookie: cookie + "bad" } }),
       false,
     );
-    assert.equal(isAuthenticated({ headers: {} }), false);
+    assert.equal(await isAuthenticated({ headers: {} }), false);
     assert.equal(
       isSameOrigin({
         headers: { origin: "https://example.com", host: "example.com" },
@@ -487,10 +521,18 @@ test("owner button signs in and logout revokes browser access", async () => {
   await page.goto(base);
   await page.locator(".owner-entry").click();
   await page.getByLabel("Admin password").fill("wrong");
-  await page.getByRole("button", { name: "Sign in to Studio" }).click();
+  await page.getByRole("button", { name: "Continue securely" }).click();
   await page.getByText("Incorrect password", { exact: true }).waitFor();
   await page.getByLabel("Admin password").fill("test-only-password");
-  await page.getByRole("button", { name: "Sign in to Studio" }).click();
+  await page.getByRole("button", { name: "Continue securely" }).click();
+  await page
+    .getByLabel("Authenticator code", { exact: true })
+    .fill(authenticator(mfaSecret).generate());
+  await page.screenshot({
+    path: "/tmp/devwrapped-mfa-login.png",
+    fullPage: true,
+  });
+  await page.getByRole("button", { name: "Verify & enter Studio" }).click();
   await page.waitForURL("**/admin/");
   await page.getByRole("heading", { name: /A good portfolio/ }).waitFor();
   await page.screenshot({
@@ -563,13 +605,11 @@ test("appearance, section order, images, undo and invalid import", async (t) => 
     .locator("#studio-nav")
     .getByRole("button", { name: /Drafts & backups/ })
     .click();
-  await page
-    .locator("#import")
-    .setInputFiles({
-      name: "bad.json",
-      mimeType: "application/json",
-      buffer: Buffer.from('{"profile":{}}'),
-    });
+  await page.locator("#import").setInputFiles({
+    name: "bad.json",
+    mimeType: "application/json",
+    buffer: Buffer.from('{"profile":{}}'),
+  });
   await page
     .getByText(
       "That backup does not contain a valid portfolio. Nothing was changed.",
@@ -595,45 +635,213 @@ test("schemas reject corrupt nested collections, dangerous keys and active image
   assert.equal(imageType(Buffer.from('<svg onload="alert(1)"></svg>')), null);
 });
 
-test('failed publish preserves edits and browser draft can be recovered', async t => {
-  const {page, context} = await setup(t);
-  await page.goto(base+'/admin/',{waitUntil:'networkidle'});
-  await page.locator('#studio-nav').getByRole('button',{name:'Homepage'}).click();
-  await page.getByLabel('Headline',{exact:true}).fill('My recoverable draft');
-  await context.route('**/api/content', r => r.request().method()==='PUT' ? r.fulfill({status:503,json:{error:'Storage temporarily unavailable'}}) : r.fulfill({json:fixture}));
-  await page.getByRole('button',{name:'Publish changes ↗',exact:true}).click();
-  await page.getByText('Storage temporarily unavailable',{exact:true}).waitFor();
-  assert.equal(await page.getByLabel('Headline',{exact:true}).inputValue(),'My recoverable draft');
-  await page.waitForFunction(()=>JSON.parse(localStorage.getItem('devwrapped-draft')||'{}').headline==='My recoverable draft');
-  page.on('dialog',d=>d.accept());
-  await page.reload({waitUntil:'networkidle'});
-  await page.getByRole('button',{name:'Restore draft',exact:true}).click();
-  await page.locator('#studio-nav').getByRole('button',{name:'Homepage'}).click();
-  assert.equal(await page.getByLabel('Headline',{exact:true}).inputValue(),'My recoverable draft');
+test("failed publish preserves edits and browser draft can be recovered", async (t) => {
+  const { page, context } = await setup(t);
+  await page.goto(base + "/admin/", { waitUntil: "networkidle" });
+  await page
+    .locator("#studio-nav")
+    .getByRole("button", { name: "Homepage" })
+    .click();
+  await page
+    .getByLabel("Headline", { exact: true })
+    .fill("My recoverable draft");
+  await context.route("**/api/content", (r) =>
+    r.request().method() === "PUT"
+      ? r.fulfill({
+          status: 503,
+          json: { error: "Storage temporarily unavailable" },
+        })
+      : r.fulfill({ json: fixture }),
+  );
+  await page
+    .getByRole("button", { name: "Publish changes ↗", exact: true })
+    .click();
+  await page
+    .getByText("Storage temporarily unavailable", { exact: true })
+    .waitFor();
+  assert.equal(
+    await page.getByLabel("Headline", { exact: true }).inputValue(),
+    "My recoverable draft",
+  );
+  await page.waitForFunction(
+    () =>
+      JSON.parse(localStorage.getItem("devwrapped-draft") || "{}").headline ===
+      "My recoverable draft",
+  );
+  page.on("dialog", (d) => d.accept());
+  await page.reload({ waitUntil: "networkidle" });
+  await page
+    .getByRole("button", { name: "Restore draft", exact: true })
+    .click();
+  await page
+    .locator("#studio-nav")
+    .getByRole("button", { name: "Homepage" })
+    .click();
+  assert.equal(
+    await page.getByLabel("Headline", { exact: true }).inputValue(),
+    "My recoverable draft",
+  );
 });
-test('image upload uses the returned URL in the draft and public save', async t => {
-  const {page, context, getSaved}=await setup(t);
-  await context.route('**/api/media',r=>r.fulfill({json:{url:'/assets/images/experience/quackhost.svg'}}));
-  await page.goto(base+'/admin/',{waitUntil:'networkidle'});
-  await page.locator('#studio-nav').getByRole('button',{name:/Experience/}).click();
-  await page.getByRole('button',{name:'Choose or upload image'}).first().click();
-  await page.locator('#upload-image').setInputFiles({name:'test.png',mimeType:'image/png',buffer:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jhcYAAAAASUVORK5CYII=','base64')});
-  await page.getByText('Image uploaded and added to your draft. Publish to show it on the portfolio.',{exact:true}).waitFor();
-  await page.getByRole('button',{name:'Publish changes ↗',exact:true}).click();
-  await page.getByText('Published successfully — your public portfolio is up to date.',{exact:true}).waitFor();
-  assert.equal(getSaved().experience[0].image,'/assets/images/experience/quackhost.svg');
+test("image upload uses the returned URL in the draft and public save", async (t) => {
+  const { page, context, getSaved } = await setup(t);
+  await context.route("**/api/media", (r) =>
+    r.fulfill({ json: { url: "/assets/images/experience/quackhost.svg" } }),
+  );
+  await page.goto(base + "/admin/", { waitUntil: "networkidle" });
+  await page
+    .locator("#studio-nav")
+    .getByRole("button", { name: /Experience/ })
+    .click();
+  await page
+    .getByRole("button", { name: "Choose or upload image" })
+    .first()
+    .click();
+  await page
+    .locator("#upload-image")
+    .setInputFiles({
+      name: "test.png",
+      mimeType: "image/png",
+      buffer: Buffer.from(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jhcYAAAAASUVORK5CYII=",
+        "base64",
+      ),
+    });
+  await page
+    .getByText(
+      "Image uploaded and added to your draft. Publish to show it on the portfolio.",
+      { exact: true },
+    )
+    .waitFor();
+  await page
+    .getByRole("button", { name: "Publish changes ↗", exact: true })
+    .click();
+  await page
+    .getByText(
+      "Published successfully — your public portfolio is up to date.",
+      { exact: true },
+    )
+    .waitFor();
+  assert.equal(
+    getSaved().experience[0].image,
+    "/assets/images/experience/quackhost.svg",
+  );
 });
-test('all studio sections work on a phone without overflow',async t=>{
-  const {page}=await setup(t,{width:360});await page.goto(base+'/admin/',{waitUntil:'networkidle'});
-  for(const tab of ['profile','home','projects','skills','experience','certificates','copy','design','backups']){
+test("all studio sections work on a phone without overflow", async (t) => {
+  const { page } = await setup(t, { width: 360 });
+  await page.goto(base + "/admin/", { waitUntil: "networkidle" });
+  for (const tab of [
+    "profile",
+    "home",
+    "projects",
+    "skills",
+    "experience",
+    "certificates",
+    "copy",
+    "design",
+    "backups",
+  ]) {
     await page.locator(`[data-tab="${tab}"]`).first().click();
-    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,tab);
+    assert.equal(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      true,
+      tab,
+    );
   }
-  await page.locator('[data-tab="projects"]').first().click();await page.screenshot({path:'/tmp/devwrapped-studio-mobile.png',fullPage:true});
+  await page.locator('[data-tab="projects"]').first().click();
+  await page.screenshot({
+    path: "/tmp/devwrapped-studio-mobile.png",
+    fullPage: true,
+  });
 });
-test('cross-origin logout and authenticated invalid uploads are denied',async()=>{
- const headers={cookie:createSessionCookie().split(';')[0],host:'example.com',origin:'https://bad.example'};
- const res=mockResponse();await authHandler({method:'DELETE',headers},res);assert.equal(res.code,403);
- const res2=mockResponse();await contentHandler({method:'PUT',headers,body:fixture},res2);assert.equal(res2.code,403);
- const res3=mockResponse();await mediaHandler({method:'POST',headers:{...headers,origin:'https://example.com'},body:{data:Buffer.from('<svg>bad</svg>').toString('base64')}},res3);assert.equal(res3.code,400);
+test("cross-origin logout and authenticated invalid uploads are denied", async () => {
+  const headers = {
+    cookie: createSessionCookie("test-version").split(";")[0],
+    host: "example.com",
+    origin: "https://bad.example",
+  };
+  const res = mockResponse();
+  await authHandler({ method: "DELETE", headers }, res);
+  assert.equal(res.code, 403);
+  const res2 = mockResponse();
+  await contentHandler({ method: "PUT", headers, body: fixture }, res2);
+  assert.equal(res2.code, 403);
+  const res3 = mockResponse();
+  await mediaHandler(
+    {
+      method: "POST",
+      headers: { ...headers, origin: "https://example.com" },
+      body: { data: Buffer.from("<svg>bad</svg>").toString("base64") },
+    },
+    res3,
+  );
+  assert.equal(res3.code, 400);
+});
+
+test("first-time mobile enrollment requires code, displays backups, and opens studio only after confirmation", async () => {
+  const previous = structuredClone(securityRecord);
+  securityRecord = {
+    enabled: false,
+    version: null,
+    used: [],
+    failures: 0,
+    lockedUntil: 0,
+  };
+  securityEtag++;
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+  });
+  try {
+    await context.route("**/api/content", (r) => r.fulfill({ json: fixture }));
+    const page = await context.newPage();
+    await page.goto(base, { waitUntil: "networkidle" });
+    await page.locator("[data-owner]").last().click();
+    await page.getByLabel("Admin password").fill("test-only-password");
+    await page.getByRole("button", { name: "Continue securely" }).click();
+    await page
+      .getByRole("heading", { name: "Add your second track." })
+      .waitFor();
+    assert.equal(
+      (
+        await context.request.get(base + "/admin/", { maxRedirects: 0 })
+      ).status(),
+      303,
+    );
+    await page.locator(".manual-key summary").click();
+    const seed = await page.locator("#setup-secret").textContent();
+    await page
+      .getByLabel("Authenticator code", { exact: true })
+      .fill(authenticator(seed).generate());
+    await page
+      .getByRole("button", { name: "Verify & enable protection" })
+      .click();
+    await page
+      .getByRole("heading", { name: "Keep these somewhere safe." })
+      .waitFor();
+    assert.equal(await page.locator(".recovery-codes code").count(), 8);
+    assert.equal(
+      await page.getByRole("button", { name: "Enter my Studio" }).isEnabled(),
+      false,
+    );
+    assert.equal(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      true,
+    );
+    await page.getByLabel("I have saved my recovery codes").check();
+    await page.getByRole("button", { name: "Enter my Studio" }).click();
+    await page.waitForURL("**/admin/");
+    await page.locator("#editor").waitFor();
+    await page
+      .locator("#studio-nav")
+      .getByRole("button", { name: "Account security" })
+      .click();
+    await page.getByRole("button", { name: "Replace authenticator" }).waitFor();
+  } finally {
+    await context.close();
+    securityRecord = previous;
+    securityEtag++;
+  }
 });

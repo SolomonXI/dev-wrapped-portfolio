@@ -1,3 +1,4 @@
+import { openOwnerFlow } from "./owner.js";
 import {
   normalize,
   copyDefaults,
@@ -44,6 +45,7 @@ const tabs = [
   ["copy", "≋", "Headings & pages"],
   ["design", "◐", "Appearance"],
   ["backups", "↶", "Drafts & backups"],
+  ["security", "◇", "Account security"],
 ];
 const labels = {
   hero: "Introduction / record",
@@ -356,6 +358,12 @@ function render() {
         "Show, hide, and reorder homepage sections. Dedicated pages remain available.",
         `<div class="section-order">${state.design.sectionOrder.map((key, i) => `<div><span class="item-number">${String(i + 1).padStart(2, "0")}</span><label><input type="checkbox" data-section="${key}" ${!state.design.hiddenSections.includes(key) ? "checked" : ""}>${labels[key]}</label><div class="item-controls"><button type="button" class="mini-button" data-section-move="${i}" data-direction="-1" aria-label="Move ${labels[key]} up" ${i === 0 ? "disabled" : ""}>↑</button><button type="button" class="mini-button" data-section-move="${i}" data-direction="1" aria-label="Move ${labels[key]} down" ${i === state.design.sectionOrder.length - 1 ? "disabled" : ""}>↓</button></div></div>`).join("")}</div><div class="fields">${field("Homepage project count (1–12)", ["design", "featuredLimit"], state.design.featuredLimit, "number")}</div>`,
       ),
+    security: () =>
+      card(
+        "Your private backstage pass.",
+        "Google Authenticator protects your account with a second factor.",
+        `<div class="tip"><b>Two-step sign-in is required.</b>Your password and a code from your authenticator are checked on the server. Sessions expire after 12 hours.</div><div class="backup-actions" style="margin-top:24px"><button type="button" class="button" data-security="replace">Replace authenticator</button><button type="button" class="button" data-security="backup">New recovery codes</button></div><p class="help">Both actions require your password and a fresh authenticator or unused recovery code. Replacing your authenticator or recovery codes signs out other sessions. There is no password-only bypass.</p>`,
+      ),
     backups: () =>
       card(
         "Nothing good gets lost.",
@@ -501,6 +509,10 @@ function mutate(fn) {
 document.addEventListener("click", async (e) => {
   const b = e.target.closest("button,[data-media]");
   if (!b || !state) return;
+  if (b.dataset.security) {
+    openOwnerFlow(b.dataset.security, b);
+    return;
+  }
   if (b.dataset.tab) {
     navigate(b.dataset.tab);
     return;

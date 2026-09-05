@@ -55,7 +55,7 @@ export default async function handler(req, res) {
     }
   }
   if (req.method !== "POST") return res.status(405).end();
-  if (!isAuthenticated(req))
+  if (!(await isAuthenticated(req)))
     return res
       .status(401)
       .json({ error: "Please sign in again before uploading." });

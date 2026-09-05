@@ -4,13 +4,15 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "@vercel/blob": "^2.3.0"
+    "@vercel/blob": "^2.3.0",
+    "otpauth": "^9.5.2",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "playwright": "^1.63.0"
   },
   "scripts": {
-    "test": "node --test tests/portfolio.test.mjs",
+    "test": "node --test tests/*.test.mjs",
     "check": "node --check assets/wrapped.js && node --check assets/admin.js && node --check assets/owner.js && node --check api/studio.js && node --check api/media.js",
     "build": "node scripts/build.mjs",
     "pretest": "npm run build",

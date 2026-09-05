@@ -5,11 +5,12 @@ for(const path of ['/admin','/admin/','/admin/index.html','/api/studio']) {
   const response=await fetch(base+path,{redirect:'manual'});
   assert.equal(response.status,303,path);assert.equal(new URL(response.headers.get('location'),base).pathname,'/');
 }
-for(const path of ['/lib/studio.html','/lib/auth.js','/api/media?key=content/site.json']) assert.equal((await fetch(base+path)).status,404,path);
+for(const path of ['/lib/studio.html','/lib/auth.js','/api/media?key=content/site.json','/api/media?key=security/owner-mfa.json','/lib/mfa-store.js']) assert.equal((await fetch(base+path)).status,404,path);
 for(const path of ['/admin_manage_skills/','/admin_login_mfa/index.html']) {const r=await fetch(base+path,{redirect:'manual'});assert.equal(r.status,307,path);}
 // No credentials are sent, so these requests must never reach storage writes.
 assert.equal((await fetch(base+'/api/content',{method:'PUT',headers:{'Content-Type':'application/json'},body:'{}'})).status,401);
 assert.equal((await fetch(base+'/api/media',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).status,401);
+assert.equal((await fetch(base+'/api/admin-auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'verify',code:'123456'})})).status,401);
 const browser=await chromium.launch({headless:true});
 try {
  const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));

@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   );
   res.setHeader("X-Content-Type-Options", "nosniff");
   if (!["GET", "HEAD"].includes(req.method)) return res.status(405).end();
-  if (!isAuthenticated(req)) {
+  if (!(await isAuthenticated(req))) {
     res.setHeader("Location", "/");
     return res.status(303).end();
   }
