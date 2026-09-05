@@ -1,3 +1,4 @@
+import { BlobPreconditionFailedError } from "@vercel/blob";
 import { mfaStore } from "../lib/mfa-store.js";
 import { authenticator } from "../lib/totp.js";
 import { test, before, after, mock } from "node:test";
@@ -41,9 +42,7 @@ mock.method(mfaStore, "read", async () => ({
 }));
 mock.method(mfaStore, "write", async (record, etag) => {
   if (etag !== String(securityEtag)) {
-    const error = new Error("Conflict");
-    error.name = "BlobPreconditionFailedError";
-    throw error;
+    throw new BlobPreconditionFailedError();
   }
   securityRecord = structuredClone(record);
   securityEtag++;
@@ -696,16 +695,14 @@ test("image upload uses the returned URL in the draft and public save", async (t
     .getByRole("button", { name: "Choose or upload image" })
     .first()
     .click();
-  await page
-    .locator("#upload-image")
-    .setInputFiles({
-      name: "test.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(
-        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jhcYAAAAASUVORK5CYII=",
-        "base64",
-      ),
-    });
+  await page.locator("#upload-image").setInputFiles({
+    name: "test.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jhcYAAAAASUVORK5CYII=",
+      "base64",
+    ),
+  });
   await page
     .getByText(
       "Image uploaded and added to your draft. Publish to show it on the portfolio.",

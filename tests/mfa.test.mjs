@@ -1,3 +1,4 @@
+import { BlobPreconditionFailedError } from "@vercel/blob";
 import { test, beforeEach, mock } from "node:test";
 import assert from "node:assert/strict";
 import crypto from "node:crypto";
@@ -19,9 +20,7 @@ mock.method(mfaStore, "read", async () => ({
 }));
 mock.method(mfaStore, "write", async (next, expected) => {
   if (expected !== etag) {
-    const e = new Error("Conflict");
-    e.name = "BlobPreconditionFailedError";
-    throw e;
+    throw new BlobPreconditionFailedError();
   }
   record = structuredClone(next);
   etag = String(Number(etag || 0) + 1);

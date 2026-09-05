@@ -83,11 +83,9 @@ export default async function handler(req, res) {
       !process.env.ADMIN_PASSWORD ||
       !process.env.MFA_ENCRYPTION_KEY
     )
-      return res
-        .status(503)
-        .json({
-          error: "Secure sign-in is unavailable. Please try again later.",
-        });
+      return res.status(503).json({
+        error: "Secure sign-in is unavailable. Please try again later.",
+      });
     const action = req.body?.action || "password";
     if (action === "cancel") {
       res.setHeader("Set-Cookie", clearChallengeCookie());
@@ -109,11 +107,9 @@ export default async function handler(req, res) {
         : "login";
       const { record } = await mfaStore.read();
       if (record.lockedUntil > Date.now())
-        return res
-          .status(429)
-          .json({
-            error: "Too many incorrect codes. Wait five minutes and try again.",
-          });
+        return res.status(429).json({
+          error: "Too many incorrect codes. Wait five minutes and try again.",
+        });
       if (!record.enabled) return await enrollment(res);
       res.setHeader(
         "Set-Cookie",
@@ -130,12 +126,10 @@ export default async function handler(req, res) {
     const challenge = readChallenge(req);
     if (!challenge || challenge.kind !== action) {
       res.setHeader("Set-Cookie", clearChallengeCookie());
-      return res
-        .status(401)
-        .json({
-          error: "Sign-in expired. Start again with your password.",
-          restart: true,
-        });
+      return res.status(401).json({
+        error: "Sign-in expired. Start again with your password.",
+        restart: true,
+      });
     }
     const result = await updateMfa((record) => {
       const now = Date.now();
@@ -221,21 +215,22 @@ export default async function handler(req, res) {
       createSessionCookie(result.version),
       clearChallengeCookie(),
     ]);
-    return res
-      .status(200)
-      .json({
-        authenticated: true,
-        step: result.codes ? "recovery" : "done",
-        recoveryCodes: result.codes,
-        recoveryUsed: result.recoveryUsed,
-      });
+    return res.status(200).json({
+      authenticated: true,
+      step: result.codes ? "recovery" : "done",
+      recoveryCodes: result.codes,
+      recoveryUsed: result.recoveryUsed,
+    });
   } catch (error) {
-    console.error("Secure sign-in failed:", error?.name || "Error");
-    return res
-      .status(503)
-      .json({
-        error:
-          "Secure sign-in is temporarily unavailable. Nothing has been bypassed; please try again.",
-      });
+    console.error(
+      "Secure sign-in failed:",
+      /^MFA_[A-Z_]+$/.test(error?.code || "")
+        ? error.code
+        : error?.constructor?.name || "Error",
+    );
+    return res.status(503).json({
+      error:
+        "Secure sign-in is temporarily unavailable. Nothing has been bypassed; please try again.",
+    });
   }
 }
