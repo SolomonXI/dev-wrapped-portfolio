@@ -5,5 +5,12 @@
   "type": "module",
   "dependencies": {
     "@vercel/blob": "^2.3.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  },
+  "scripts": {
+    "test": "node --test tests/portfolio.test.mjs",
+    "check": "node --check assets/wrapped.js && node --check assets/admin.js"
   }
 }

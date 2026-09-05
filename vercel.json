@@ -1,0 +1,49 @@
+{
+  "redirects": [
+    {
+      "source": "/admin_dashboard_updated/:path*",
+      "destination": "/admin/",
+      "permanent": true
+    },
+    {
+      "source": "/admin_login_mfa/:path*",
+      "destination": "/admin/",
+      "permanent": true
+    },
+    {
+      "source": "/admin_manage_certificates/:path*",
+      "destination": "/admin/",
+      "permanent": true
+    },
+    {
+      "source": "/admin_manage_experience/:path*",
+      "destination": "/admin/",
+      "permanent": true
+    },
+    {
+      "source": "/admin_manage_projects/:path*",
+      "destination": "/admin/",
+      "permanent": true
+    },
+    {
+      "source": "/admin_manage_skills/:path*",
+      "destination": "/admin/",
+      "permanent": true
+    },
+    {
+      "source": "/your_dev_wrapped_dashboard_with_shader/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dev_wrapped/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/nova_dashboard_details/:path*",
+      "destination": "/featured_projects_wrapped_visual/",
+      "permanent": true
+    }
+  ]
+}
